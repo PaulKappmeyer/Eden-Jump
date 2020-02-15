@@ -40,22 +40,23 @@ public class Window extends JFrame {
 		this.setLocationRelativeTo(null);
 	}
 	
-	public int getInsetX() {
-		return insetX;
-	}
-	
-	public int getInsetY() {
-		return insetY;
-	}
-	
 	public Graphics beginDrawing() {
 		Graphics graphics = strat.getDrawGraphics();
 		graphics.translate(insetX, insetY);
 		return graphics;
 	}
 	
-	public void endDrawing(Graphics g){
-		g.dispose();
+	public void endDrawing(Graphics graphics){
+		graphics.dispose();
 		strat.show();
+	}
+	
+	//---------------------------------------------Getters
+	public int getInsetX() {
+		return insetX;
+	}
+	
+	public int getInsetY() {
+		return insetY;
 	}
 }
