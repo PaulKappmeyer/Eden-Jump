@@ -6,7 +6,7 @@ import gameengine.maths.Vector2D;
 
 public abstract class GameObject {
 
-	private Vector2D position;
+	protected Vector2D position;
 	
 	public GameObject() {
 		this.position = new Vector2D();
@@ -18,7 +18,7 @@ public abstract class GameObject {
 	
 	public abstract void update (float tslf);
 	
-	public abstract void draw (Graphics graphics);
+	public abstract void draw (Graphics g);
 	
 	
 	//------------------------------------Getters

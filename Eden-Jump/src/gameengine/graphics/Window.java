@@ -41,13 +41,13 @@ public class Window extends JFrame {
 	}
 	
 	public Graphics beginDrawing() {
-		Graphics graphics = strat.getDrawGraphics();
-		graphics.translate(insetX, insetY);
-		return graphics;
+		Graphics g = strat.getDrawGraphics();
+		g.translate(insetX, insetY);
+		return g;
 	}
 	
-	public void endDrawing(Graphics graphics){
-		graphics.dispose();
+	public void endDrawing(Graphics g){
+		g.dispose();
 		strat.show();
 	}
 	

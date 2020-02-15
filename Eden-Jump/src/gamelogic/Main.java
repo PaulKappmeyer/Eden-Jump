@@ -29,11 +29,15 @@ public class Main extends GameBase{
 	}
 
 	@Override
-	public void draw(Graphics graphics) {
-		graphics.setColor(Color.WHITE);
-		graphics.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	public void draw(Graphics g) {
+		drawBackground(g);
 		
-		player.draw(graphics);
+		player.draw(g);
+	}
+	
+	public void drawBackground(Graphics g) {
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 	
 }
