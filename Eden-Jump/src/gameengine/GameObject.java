@@ -8,6 +8,14 @@ public abstract class GameObject {
 
 	private Vector2D position;
 	
+	public GameObject() {
+		this.position = new Vector2D();
+	}
+	
+	public GameObject(float x, float y) {
+		this.position = new Vector2D(x, y);
+	}
+	
 	public abstract void update (float tslf);
 	
 	public abstract void draw (Graphics graphics);
