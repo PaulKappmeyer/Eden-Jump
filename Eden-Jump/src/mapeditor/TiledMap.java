@@ -14,7 +14,7 @@ class TiledMap {
 	private Tile[][] tiles;
 	private int width; //width of the map in number of tiles
 	private int height; //height of the map in number of tiles
-	private int size; //the size of one tile;
+	private int tileSize; //the size of one tile;
 
 	private Tile mouseOver;
 
@@ -27,7 +27,7 @@ class TiledMap {
 				tiles[x][y] = new Tile(x * tileSize, y * tileSize, tileSize);
 			}
 		}
-		this.size = tileSize;
+		this.tileSize = tileSize;
 	}
 
 	public void update(float tslf) {
@@ -35,8 +35,8 @@ class TiledMap {
 		float mouseY = MouseInputManager.getMouseY();
 
 		mouseOver = null;
-		int tileX = (int) ((mouseX + MapEditor.camera.getX()) / size);
-		int tileY = (int) ((mouseY + MapEditor.camera.getY()) / size);
+		int tileX = (int) ((mouseX + MapEditor.camera.getX()) / tileSize);
+		int tileY = (int) ((mouseY + MapEditor.camera.getY()) / tileSize);
 		if(tileX >= 0 && tileX < width && tileY >= 0 && tileY < height) mouseOver = tiles[tileX][tileY];
 
 		if(mouseOver != null) {
@@ -51,13 +51,13 @@ class TiledMap {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				Tile tile = tiles[x][y];
-				if(tile.getValue() == SOLID) g.fillRect(tile.getX(), tile.getY(), size, size);
+				if(tile.getValue() == SOLID) g.fillRect(tile.getX(), tile.getY(), tileSize, tileSize);
 			}
 		}
 
 		if(mouseOver != null) {
 			g.setColor(MOUSE_OVER);
-			g.fillRect(mouseOver.getX(), mouseOver.getY(), size, size);
+			g.fillRect(mouseOver.getX(), mouseOver.getY(), tileSize, tileSize);
 		}
 
 		drawOutlines(g);
@@ -70,5 +70,22 @@ class TiledMap {
 				tiles[x][y].drawOutline(g);
 			}
 		}
+	}
+	
+	//------------------------------------------Getters
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public int getTileSize() {
+		return tileSize;
+	}
+	
+	public Tile[][] getTiles() {
+		return tiles;
 	}
 }

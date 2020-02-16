@@ -2,10 +2,13 @@ package mapeditor;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 
 import gameengine.GameBase;
 import gameengine.graphics.Camera;
+import gameengine.input.KeyboardInputManager;
 import gameengine.input.MouseInputManager;
 import gameengine.maths.Vector2D;
 
@@ -21,7 +24,9 @@ class MapEditor extends GameBase{
 	private Vector2D oldCameraPosition; //saves position of the camera when mouse is dragged
 
 	private TiledMap map;
-	
+
+	private boolean saved = false;
+
 	public static void main(String[] args) {
 		MapEditor mapeditor = new MapEditor();
 		mapeditor.start("MapEditor Eden Jump", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -53,8 +58,21 @@ class MapEditor extends GameBase{
 		}else {
 			isPressed = false;
 		}
-		
+
 		map.update(tslf);
+
+		if(KeyboardInputManager.isKeyDown(KeyEvent.VK_CONTROL) && KeyboardInputManager.isKeyDown(KeyEvent.VK_S)) {
+			if(!saved) {
+				try {
+					MapSaver.wirteMap(map);
+					saved = true;
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		}else {
+			saved = false;
+		}
 	}
 
 	@Override
