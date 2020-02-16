@@ -4,9 +4,9 @@ import java.awt.Graphics;
 
 import gameengine.maths.Vector2D;
 
-public abstract class GameObject {
+public class GameObject {
 
-	protected Vector2D position;
+	public Vector2D position;
 	
 	public GameObject() {
 		this.position = new Vector2D();
@@ -16,9 +16,9 @@ public abstract class GameObject {
 		this.position = new Vector2D(x, y);
 	}
 	
-	public abstract void update (float tslf);
+	public void update (float tslf) {};
 	
-	public abstract void draw (Graphics g);
+	public void draw (Graphics g) {};
 	
 	
 	//------------------------------------Getters
