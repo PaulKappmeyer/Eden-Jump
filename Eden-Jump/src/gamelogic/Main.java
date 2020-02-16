@@ -56,91 +56,83 @@ public class Main extends GameBase{
 	public void doPhysics(float tslf) {
 		Vector2D position = player.position;
 		Vector2D newPositon = new Vector2D(player.getX(), player.getY());
+		RectHitbox hitbox = player.getHitbox();
 		newPositon.x += player.movementVector.x * tslf;
 		newPositon.y += player.movementVector.y * tslf;
 
-		//Find closest obstacle below player
-		float closest = Float.MAX_VALUE;
-		RectHitbox ground = null;
+		//Finding the closest obstacles to the player in all 4 directions;
+		float closestBot = Float.MAX_VALUE;
+		float closestTop = Float.MAX_VALUE;
+		float closestLef = Float.MAX_VALUE;
+		float closestRig = Float.MAX_VALUE;
+		RectHitbox bot = null;
+		RectHitbox top = null;
+		RectHitbox lef = null;
+		RectHitbox rig = null;
+		
 		for (int i = 0; i < obstacles.length; i++) {
 			RectHitbox obstacle = obstacles[i];
-			if(position.x < obstacle.getX() + obstacle.getWidth() && position.x + player.getWidth() > obstacle.getX() && position.y + player.getHeight() <= obstacle.getY()) {
+			//Find closest obstacle below player
+			if(hitbox.getX() < obstacle.getX() + obstacle.getWidth() && hitbox.getX() + hitbox.getWidth() > obstacle.getX() && hitbox.getY() + hitbox.getHeight() <= obstacle.getY()) {
 				//When current bottom side of player is above top side of obstacle
-				if(obstacle.getY() - (position.y + player.getHeight()) < closest) {
+				if(obstacle.getY() - (hitbox.getY() + hitbox.getHeight()) < closestBot) {
 					//When the top side of the obstacle is closer to the bottom side of the player
-					ground = obstacle;
-					closest = obstacle.getY() - (position.y + player.getHeight());
+					bot = obstacle;
+					closestBot = obstacle.getY() - (hitbox.getY() + hitbox.getHeight());
+				}
+			}
+			//Find closest obstacle above player
+			if(hitbox.getX() < obstacle.getX() + obstacle.getWidth() && hitbox.getX() + hitbox.getWidth() > obstacle.getX() && hitbox.getY() >= obstacle.getY() + obstacle.getHeight()) {
+				//When current top side of player is below bottom side of obstacle
+				if(hitbox.getY() - (obstacle.getY() + obstacle.getHeight()) < closestTop) {
+					top = obstacle;
+					closestTop = hitbox.getY() - (obstacle.getY() + obstacle.getHeight());
+				}
+			}
+			//Find closest obstacle right to the player
+			if(hitbox.getY() < obstacle.getY() + obstacle.getHeight() && hitbox.getY() + hitbox.getHeight() > obstacle.getY() && hitbox.getX() + hitbox.getWidth() <= obstacle.getX()) {
+				//When current right side of player is left to left side of obstacle
+				if(obstacle.getX() - (hitbox.getX() + hitbox.getWidth()) < closestRig) {
+					rig = obstacle;
+					closestRig = obstacle.getX() - (hitbox.getX() + hitbox.getWidth());
+				}
+			}
+			//Find closest obstacle left to the player
+			if(hitbox.getY() < obstacle.getY() + obstacle.getHeight() && hitbox.getY() + hitbox.getHeight() > obstacle.getY() && hitbox.getX() >= obstacle.getX() + obstacle.getWidth()) {
+				//When current left side of player is right to right side of obstacle
+				if(hitbox.getX() - (obstacle.getX() + obstacle.getWidth()) < closestLef) {
+					lef = obstacle;
+					closestLef = hitbox.getX() - (obstacle.getX() + obstacle.getWidth());
 				}
 			}
 		}
-		if(ground != null) {
-			if(newPositon.y + player.hitbox.getOffsetY() + player.hitbox.getHeight() > ground.getY()) {
+		if(bot != null) {
+			if(newPositon.y + (hitbox.getOffsetY() + hitbox.getHeight()) > bot.getY()) {
 				//When new bottom side of player is below top side of obstacle
-				position.y = ground.getY() - player.getHeight();
+				position.y = bot.getY() - (hitbox.getOffsetY() + hitbox.getHeight());
 				player.movementVector.y = 0;
 				player.isJumping = false;
 			}
 		}
-
-		//Find closest obstacle above player
-		closest = Float.MAX_VALUE;
-		RectHitbox top = null;
-		for (int i = 0; i < obstacles.length; i++) {
-			RectHitbox obstacle = obstacles[i];
-			if(position.x < obstacle.getX() + obstacle.getWidth() && position.x + player.getWidth() > obstacle.getX() && position.y >= obstacle.getY() + obstacle.getHeight()) {
-				//When current top side of player is below bottom side of obstacle
-				if(position.y - (obstacle.getY() + obstacle.getHeight()) < closest) {
-					top = obstacle;
-					closest = position.y - (obstacle.getY() + obstacle.getHeight());
-				}
-			}
-		}
 		if(top != null) {
-			if(newPositon.y < top.getY() + top.getHeight()) {
+			if(newPositon.y + hitbox.getOffsetY() < top.getY() + top.getHeight()) {
 				//When new top side of player is above bottom side of obstacle
-				position.y = top.getY() + top.getHeight();
+				position.y = (top.getY() + top.getHeight()) - hitbox.getOffsetY();
 				player.movementVector.y = 0;
 			}
 		}
-
-		//Find closest obstacle right to the player
-		closest = Float.MAX_VALUE;
-		RectHitbox right = null;
-		for (int i = 0; i < obstacles.length; i++) {
-			RectHitbox obstacle = obstacles[i];
-			if(position.y < obstacle.getY() + obstacle.getHeight() && position.y + player.getHeight() > obstacle.getY() && position.x + player.getWidth() <= obstacle.getX()) {
-				//When current right side of player is left to left side of obstacle
-				if(obstacle.getX() - (position.x + player.getWidth()) < closest) {
-					right = obstacle;
-					closest = obstacle.getX() - (position.x + player.getWidth());
-				}
-			}
-		}
-		if(right != null) {
-			if(newPositon.x + player.getWidth() > right.getX()) {
+		if(rig != null) {
+			if(newPositon.x + (hitbox.getOffsetX() + hitbox.getWidth()) > rig.getX()) {
 				//When new right side of player is right to left side of obstacle
-				position.x = right.getX() - player.getWidth();
+				position.x = rig.getX() - (hitbox.getOffsetX() + hitbox.getWidth());
 				player.movementVector.x = 0;
 			}
 		}
 		
-		//Find closest obstacle left to the player
-		closest = Float.MAX_VALUE;
-		RectHitbox left = null;
-		for (int i = 0; i < obstacles.length; i++) {
-			RectHitbox obstacle = obstacles[i];
-			if(position.y < obstacle.getY() + obstacle.getHeight() && position.y + player.getHeight() > obstacle.getY() && position.x >= obstacle.getX() + obstacle.getWidth()) {
-				//When current left side of player is right to right side of obstacle
-				if(position.x - (obstacle.getX() + obstacle.getWidth()) < closest) {
-					left = obstacle;
-					closest = position.x - (obstacle.getX() + obstacle.getWidth());
-				}
-			}
-		}
-		if(left != null) {
-			if(newPositon.x < left.getX() + left.getWidth()) {
+		if(lef != null) {
+			if(newPositon.x + hitbox.getOffsetX() < lef.getX() + lef.getWidth()) {
 				//When new left side of player is left to right side of obstacle
-				position.x = left.getX() + left.getWidth();
+				position.x = (lef.getX() + lef.getWidth()) - hitbox.getOffsetX();
 				player.movementVector.x = 0;
 			}
 		}
@@ -158,7 +150,8 @@ public class Main extends GameBase{
 		player.draw(g);
 
 		for (int i = 0; i < obstacles.length; i++) {
-			obstacles[i].draw(g);
+			RectHitbox ob = obstacles[i];
+			if(camera.isVisibleOnCamera(ob.getX(), ob.getY(), ob.getWidth(), ob.getHeight())) ob.draw(g);
 		}
 	}
 
@@ -166,5 +159,4 @@ public class Main extends GameBase{
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
-
 }

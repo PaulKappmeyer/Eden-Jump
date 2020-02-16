@@ -18,18 +18,14 @@ public class Player extends GameObject{
 	private float GRAVITY = 1100;
 	
 	public boolean isJumping = false;
-	public RectHitbox headHitbox;
-	public RectHitbox groundHitbox;
-	public RectHitbox hitbox;
+	private RectHitbox hitbox;
 	public Vector2D movementVector;
 	
 	public Player(float x, float y) {
 		super(x, y);
-		this.width = 128;
-		this.height = 256;
+		this.width = 120;
+		this.height = 100;
 		this.movementVector = new Vector2D();
-		this.headHitbox = new RectHitbox(this, 0, 0, width, height/2);
-		this.groundHitbox = new RectHitbox(this, 0, height/2, width, height/2);
 		this.hitbox = new RectHitbox(this, 0, 0, width, height);
 	}
 	
@@ -50,9 +46,7 @@ public class Player extends GameObject{
 		}
 		
 		movementVector.y += GRAVITY * tslf;
-		
-		headHitbox.update();
-		groundHitbox.update();
+
 		hitbox.update();
 	}
 
@@ -60,14 +54,14 @@ public class Player extends GameObject{
 	public void draw(Graphics g) {
 		g.setColor(Color.YELLOW);
 		MyGraphics.fillRectWithOutline(g, (int)getX(), (int)getY(), width, height);
-		
-//		headHitbox.draw(g);
-//		groundHitbox.draw(g);
-//		hitbox.draw(g);
 	}
 
 	
 	//-------------------------------------------Getters
+	public RectHitbox getHitbox() {
+		return hitbox;
+	}
+	
 	public int getWidth() {
 		return width;
 	}
