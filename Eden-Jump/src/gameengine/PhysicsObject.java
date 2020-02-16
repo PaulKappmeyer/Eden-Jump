@@ -4,6 +4,8 @@ import gameengine.hitbox.CollisionMatrix;
 import gameengine.hitbox.RectHitbox;
 import gameengine.maths.Vector2D;
 import gamelogic.Main;
+import gamelogic.tiledMap.SolidTile;
+import gamelogic.tiledMap.Tile;
 
 public class PhysicsObject extends GameObject{
 	public static float GRAVITY = 70;
@@ -74,9 +76,13 @@ public class PhysicsObject extends GameObject{
 		RectHitbox lef = null;
 		RectHitbox rig = null;
 
-		for (int i = 0; i < Main.map.getObstacles().length; i++) {
-			for (int j = 0; j < Main.map.getObstacles()[i].length; j++) {
-				RectHitbox obstacle = Main.map.getObstacles()[i][j];
+		for (int i = 0; i < Main.map.getWidth(); i++) {
+			for (int j = 0; j < Main.map.getHeight(); j++) {
+				Tile tile = Main.map.getTiles()[i][j];
+				RectHitbox obstacle = null;
+				if(tile instanceof SolidTile) {
+					obstacle = ((SolidTile)tile).getHitbox();
+				}
 				if(obstacle == null) continue;
 				
 				//Find closest obstacle below player

@@ -10,6 +10,7 @@ import gameengine.graphics.Camera;
 import gameengine.input.KeyboardInputManager;
 import gameengine.loaders.MapLoader;
 import gamelogic.player.Player;
+import gamelogic.tiledMap.Map;
 
 public class Main extends GameBase{
 

@@ -14,4 +14,9 @@ public class Vector2D {
 		this.x = x;
 		this.y = y;
 	}
+	
+	@Override
+	public String toString() {
+		return "[x:" + String.format("%1.2f", x) + " y:" + String.format("%1.2f", y) + "]"; 
+	}
 }
