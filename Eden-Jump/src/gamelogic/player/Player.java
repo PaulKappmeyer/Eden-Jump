@@ -5,10 +5,11 @@ import java.awt.Graphics;
 
 import gameengine.PhysicsObject;
 import gameengine.graphics.MyGraphics;
+import gameengine.hitbox.CollisionMatrix;
 
 public class Player extends PhysicsObject{
-	private float walkSpeed = 350;
-	private float jumpPower = 1000;
+	public float walkSpeed = 500;
+	public float jumpPower = 2300;
 
 	private boolean isJumping = false;
 
@@ -24,15 +25,16 @@ public class Player extends PhysicsObject{
 		if(PlayerInput.isLeftKeyDown()) {
 			movementVector.x = -walkSpeed;
 		}
-
 		if(PlayerInput.isRightKeyDown()) {
 			movementVector.x = +walkSpeed;
 		}
-
 		if(PlayerInput.isJumpKeyDown() && !isJumping) {
 			movementVector.y = -jumpPower;
 			isJumping = true;
 		}
+		
+		isJumping = true;
+		if(collisionMatrix[CollisionMatrix.BOT] != null) isJumping = false;
 	}
 
 	@Override

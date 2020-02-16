@@ -6,35 +6,33 @@ import gameengine.maths.Vector2D;
 import gamelogic.Main;
 
 public class PhysicsObject extends GameObject{
-	public static final float GRAVITY = 1100;
-	
+	public static float GRAVITY = 70;
+
 	protected Vector2D movementVector;
 
 	protected RectHitbox hitbox;
 	protected RectHitbox[] collisionMatrix;
-	
+
 	public PhysicsObject() {
 		super();
 		this.movementVector = new Vector2D();
 		this.hitbox = new RectHitbox(this, 0, 0, 0, 0);
 		this.collisionMatrix = new RectHitbox[4];
 	}
-	
+
 	public PhysicsObject(float x, float y, int width, int height) {
 		super(x, y, width, height);
 		this.movementVector = new Vector2D();
 		this.hitbox = new RectHitbox(this, 0, 0, width, height);
 		this.collisionMatrix = new RectHitbox[4];
 	}
-	
+
 	@Override
 	public void update(float tslf) {
-		movementVector.y += GRAVITY * tslf;
-		
-		hitbox.update(); // -> saving old position
-		
+		movementVector.y += (GRAVITY * GRAVITY) * tslf;
+
 		updateCollisionMatrix(tslf); // checking collision based on the new position -> current movement Vector
-		
+
 		if(collisionMatrix[CollisionMatrix.BOT] != null) {
 			position.y = collisionMatrix[CollisionMatrix.BOT].getY() - (hitbox.getOffsetY() + hitbox.getHeight());
 			movementVector.y = 0;
@@ -53,11 +51,13 @@ public class PhysicsObject extends GameObject{
 			movementVector.x = 0;
 
 		}
-		
+
 		position.x += movementVector.x * tslf;
 		position.y += movementVector.y * tslf;
+		
+		hitbox.update(); // -> saving old position
 	}
-	
+
 	public void updateCollisionMatrix(float tslf) {
 		Vector2D newPositon = new Vector2D(getX(), getY());
 		newPositon.x += movementVector.x * tslf;
@@ -73,40 +73,44 @@ public class PhysicsObject extends GameObject{
 		RectHitbox top = null;
 		RectHitbox lef = null;
 		RectHitbox rig = null;
-		
-		for (int i = 0; i < Main.obstacles.length; i++) {
-			RectHitbox obstacle = Main.obstacles[i];
-			//Find closest obstacle below player
-			if(hitbox.getX() < obstacle.getX() + obstacle.getWidth() && hitbox.getX() + hitbox.getWidth() > obstacle.getX() && hitbox.getY() + hitbox.getHeight() <= obstacle.getY()) {
-				//When current bottom side of player is above top side of obstacle
-				if(obstacle.getY() - (hitbox.getY() + hitbox.getHeight()) < closestBot) {
-					//When the top side of the obstacle is closer to the bottom side of the player
-					bot = obstacle;
-					closestBot = obstacle.getY() - (hitbox.getY() + hitbox.getHeight());
+
+		for (int i = 0; i < Main.map.getObstacles().length; i++) {
+			for (int j = 0; j < Main.map.getObstacles()[i].length; j++) {
+				RectHitbox obstacle = Main.map.getObstacles()[i][j];
+				if(obstacle == null) continue;
+				
+				//Find closest obstacle below player
+				if(hitbox.getX() < obstacle.getX() + obstacle.getWidth() && hitbox.getX() + hitbox.getWidth() > obstacle.getX() && hitbox.getY() + hitbox.getHeight() <= obstacle.getY()) {
+					//When current bottom side of player is above top side of obstacle
+					if(obstacle.getY() - (hitbox.getY() + hitbox.getHeight()) < closestBot) {
+						//When the top side of the obstacle is closer to the bottom side of the player
+						bot = obstacle;
+						closestBot = obstacle.getY() - (hitbox.getY() + hitbox.getHeight());
+					}
 				}
-			}
-			//Find closest obstacle above player
-			if(hitbox.getX() < obstacle.getX() + obstacle.getWidth() && hitbox.getX() + hitbox.getWidth() > obstacle.getX() && hitbox.getY() >= obstacle.getY() + obstacle.getHeight()) {
-				//When current top side of player is below bottom side of obstacle
-				if(hitbox.getY() - (obstacle.getY() + obstacle.getHeight()) < closestTop) {
-					top = obstacle;
-					closestTop = hitbox.getY() - (obstacle.getY() + obstacle.getHeight());
+				//Find closest obstacle above player
+				if(hitbox.getX() < obstacle.getX() + obstacle.getWidth() && hitbox.getX() + hitbox.getWidth() > obstacle.getX() && hitbox.getY() >= obstacle.getY() + obstacle.getHeight()) {
+					//When current top side of player is below bottom side of obstacle
+					if(hitbox.getY() - (obstacle.getY() + obstacle.getHeight()) < closestTop) {
+						top = obstacle;
+						closestTop = hitbox.getY() - (obstacle.getY() + obstacle.getHeight());
+					}
 				}
-			}
-			//Find closest obstacle right to the player
-			if(hitbox.getY() < obstacle.getY() + obstacle.getHeight() && hitbox.getY() + hitbox.getHeight() > obstacle.getY() && hitbox.getX() + hitbox.getWidth() <= obstacle.getX()) {
-				//When current right side of player is left to left side of obstacle
-				if(obstacle.getX() - (hitbox.getX() + hitbox.getWidth()) < closestRig) {
-					rig = obstacle;
-					closestRig = obstacle.getX() - (hitbox.getX() + hitbox.getWidth());
+				//Find closest obstacle right to the player
+				if(hitbox.getY() < obstacle.getY() + obstacle.getHeight() && hitbox.getY() + hitbox.getHeight() > obstacle.getY() && hitbox.getX() + hitbox.getWidth() <= obstacle.getX()) {
+					//When current right side of player is left to left side of obstacle
+					if(obstacle.getX() - (hitbox.getX() + hitbox.getWidth()) < closestRig) {
+						rig = obstacle;
+						closestRig = obstacle.getX() - (hitbox.getX() + hitbox.getWidth());
+					}
 				}
-			}
-			//Find closest obstacle left to the player
-			if(hitbox.getY() < obstacle.getY() + obstacle.getHeight() && hitbox.getY() + hitbox.getHeight() > obstacle.getY() && hitbox.getX() >= obstacle.getX() + obstacle.getWidth()) {
-				//When current left side of player is right to right side of obstacle
-				if(hitbox.getX() - (obstacle.getX() + obstacle.getWidth()) < closestLef) {
-					lef = obstacle;
-					closestLef = hitbox.getX() - (obstacle.getX() + obstacle.getWidth());
+				//Find closest obstacle left to the player
+				if(hitbox.getY() < obstacle.getY() + obstacle.getHeight() && hitbox.getY() + hitbox.getHeight() > obstacle.getY() && hitbox.getX() >= obstacle.getX() + obstacle.getWidth()) {
+					//When current left side of player is right to right side of obstacle
+					if(hitbox.getX() - (obstacle.getX() + obstacle.getWidth()) < closestLef) {
+						lef = obstacle;
+						closestLef = hitbox.getX() - (obstacle.getX() + obstacle.getWidth());
+					}
 				}
 			}
 		}
@@ -136,5 +140,5 @@ public class PhysicsObject extends GameObject{
 		}	
 		this.collisionMatrix = matrix; //Set the matrix
 	}
-	
+
 }
