@@ -6,7 +6,9 @@ import gameengine.maths.Vector2D;
 
 public class GameObject {
 
-	public Vector2D position;
+	protected Vector2D position;
+	protected int width;
+	protected int height;
 	
 	public GameObject() {
 		this.position = new Vector2D();
@@ -14,6 +16,12 @@ public class GameObject {
 	
 	public GameObject(float x, float y) {
 		this.position = new Vector2D(x, y);
+	}
+	
+	public GameObject(float x, float y, int width, int height) {
+		this.position = new Vector2D(x, y);
+		this.width = width;
+		this.height = height;
 	}
 	
 	public void update (float tslf) {};
@@ -28,5 +36,13 @@ public class GameObject {
 	
 	public float getY() {
 		return position.y;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
 	}
 }
