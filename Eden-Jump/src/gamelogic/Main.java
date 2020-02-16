@@ -8,6 +8,7 @@ import gameengine.GameBase;
 import gameengine.PhysicsObject;
 import gameengine.graphics.Camera;
 import gameengine.input.KeyboardInputManager;
+import gameengine.loaders.MapLoader;
 import gamelogic.player.Player;
 
 public class Main extends GameBase{
@@ -18,7 +19,7 @@ public class Main extends GameBase{
 	public static Player player;
 	public static Camera camera;
 	public static Map map;
-	
+
 	public static void main(String[] args) {
 		Main main = new Main();
 		main.start("Eden Jump", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -30,9 +31,12 @@ public class Main extends GameBase{
 		player.walkSpeed = 500;
 		player.jumpPower = 2300;
 		PhysicsObject.GRAVITY = 70;
-		
-		map = new Map(100, 10);
-		map.init();
+
+		try {
+			map = MapLoader.loadMap(".\\maps\\map.txt");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		camera = new Camera();
 		camera.setFocusedObject(player);
@@ -55,7 +59,7 @@ public class Main extends GameBase{
 		g.translate((int)-camera.getX(), (int)-camera.getY());
 
 		map.draw(g);
-		
+
 		player.draw(g);
 	}
 

@@ -2,7 +2,6 @@ package gamelogic;
 
 import java.awt.Graphics;
 
-import gameengine.GameObject;
 import gameengine.hitbox.RectHitbox;
 
 public class Map {
@@ -11,24 +10,10 @@ public class Map {
 	int height; //size in number of tiles;
 	private RectHitbox[][] obstacles;
 	
-	public Map(int width, int height) {
+	public Map(int width, int height, RectHitbox[][]obstacles) {
 		this.width = width;
 		this.height = height;
-		obstacles = new RectHitbox[width][height];
-	}
-	
-	public void init() {
-		obstacles = new RectHitbox[width][height];
-		int size = 100;
-		int x = 0;
-		int y = obstacles[0].length-1;
-		for (x = 0; x < obstacles.length; x++) {
-			obstacles[x][y] = new RectHitbox(new GameObject(x*size, y*size), 0, 0, size, size);
-		}
-		x = 0;
-		for (y = 0; y < obstacles[x].length; y++) {
-			obstacles[x][y] = new RectHitbox(new GameObject(x*size, y*size), 0, 0, size, size);
-		}
+		this.obstacles = obstacles;
 	}
 	
 	public void draw(Graphics g) {
