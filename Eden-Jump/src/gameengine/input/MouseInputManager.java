@@ -9,7 +9,7 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.event.MouseInputListener;
 
-import gameengine.graphics.Window;
+import gameengine.graphics.MyWindow;
 
 /**
  * 
@@ -23,9 +23,9 @@ public final class MouseInputManager implements MouseInputListener, MouseWheelLi
 	private static float mouseX;
 	private static float mouseY;
 	
-	private Window window;
+	private MyWindow window;
 	
-	public MouseInputManager(Window window) {
+	public MouseInputManager(MyWindow window) {
 		this.window = window;
 	}
 	

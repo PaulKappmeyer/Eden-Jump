@@ -35,16 +35,10 @@ class TiledMap {
 		float mouseY = MouseInputManager.getMouseY();
 
 		mouseOver = null;
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				float tileX = x * size - MapEditor.camera.getX();
-				float tileY = y * size - MapEditor.camera.getY();
-				if(mouseX >= tileX && mouseX <= tileX + size && mouseY >= tileY && mouseY <= tileY + size) {
-					mouseOver = tiles[x][y];
-					break;
-				}
-			}
-		}
+		int tileX = (int) ((mouseX + MapEditor.camera.getX()) / size);
+		int tileY = (int) ((mouseY + MapEditor.camera.getY()) / size);
+		if(tileX >= 0 && tileX < width && tileY >= 0 && tileY < height) mouseOver = tiles[tileX][tileY];
+
 		if(mouseOver != null) {
 			if(MouseInputManager.isButtonDown(MouseEvent.BUTTON1)) {
 				mouseOver.setValue(SOLID);

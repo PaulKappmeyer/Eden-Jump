@@ -9,7 +9,7 @@ import gameengine.graphics.Camera;
 import gameengine.input.MouseInputManager;
 import gameengine.maths.Vector2D;
 
-public class MapEditor extends GameBase{
+class MapEditor extends GameBase{
 
 	public static final int SCREEN_WIDTH = 1280;
 	public static final int SCREEN_HEIGHT = 860;

@@ -17,18 +17,19 @@ import javax.swing.JFrame;
 
 
 @SuppressWarnings("serial")
-public class Window extends JFrame {
+public class MyWindow extends JFrame {
 	private int insetX;
 	private int insetY;
 	private BufferStrategy strat;
 	
-	public Window(String title, int width, int height) {
+	public MyWindow(String title, int width, int height) {
 		this.setTitle(title);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setUndecorated(false);
 		this.setVisible(true);
 		this.setResizable(false);
 		
+		setVisible(true);
 		createBufferStrategy(2);
 		strat = getBufferStrategy();
 		

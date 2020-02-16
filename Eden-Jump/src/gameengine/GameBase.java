@@ -5,7 +5,7 @@ package gameengine;
 
 import java.awt.Graphics;
 
-import gameengine.graphics.Window;
+import gameengine.graphics.MyWindow;
 import gameengine.input.KeyboardInputManager;
 import gameengine.input.MouseInputManager;
 
@@ -15,7 +15,7 @@ import gameengine.input.MouseInputManager;
  *
  */
 public abstract class GameBase {
-	private Window window;
+	private MyWindow window;
 
 	//-----------------------------------------------ABSTRACT METHODS FOR SUB-CLASS
 	public abstract void init();
@@ -30,7 +30,7 @@ public abstract class GameBase {
 	 * @param height The height of the window
 	 */
 	public void start(String title, int width, int height) {
-		window = new Window(title, width, height);
+		window = new MyWindow(title, width, height);
 
 		//Adding inputManagers to window
 		window.addKeyListener(new KeyboardInputManager());
