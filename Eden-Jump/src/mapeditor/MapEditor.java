@@ -14,19 +14,13 @@ public class MapEditor extends GameBase{
 	public static final int SCREEN_WIDTH = 1280;
 	public static final int SCREEN_HEIGHT = 860;
 
-	public static final Color MOUSE_OVER = new Color(0, 255, 0, 150);
-
-	private int[][] tiles;
-	private int width; //width of the map in number of tiles
-	private int height; //height of the map in number of tiles
-	private int size; //the size of one tile;
-
-	private Camera camera;
+	public static Camera camera;
 
 	private boolean isPressed;
-	private Vector2D oldMousePosition = new Vector2D(); //saves position of the mouse when mouse is dragged
-	private Vector2D oldCameraPosition = new Vector2D(); //saves position of the camera when mouse is dragged
-	
+	private Vector2D oldMousePosition; //saves position of the mouse when mouse is dragged
+	private Vector2D oldCameraPosition; //saves position of the camera when mouse is dragged
+
+	private TiledMap map;
 	
 	public static void main(String[] args) {
 		MapEditor mapeditor = new MapEditor();
@@ -35,17 +29,10 @@ public class MapEditor extends GameBase{
 
 	@Override
 	public void init() {
-		width = 100;
-		height = 10;
-		tiles = new int[width][height];
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				tiles[x][y] = 0;
-			}
-		}
-		size = 100;
-
+		map = new TiledMap(100, 10, 50);
 		camera = new Camera();
+		oldMousePosition = new Vector2D();
+		oldCameraPosition = new Vector2D();
 	}
 
 	@Override
@@ -66,17 +53,8 @@ public class MapEditor extends GameBase{
 		}else {
 			isPressed = false;
 		}
-
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				float tileX = x * size - camera.getX();
-				float tileY = y * size - camera.getY();
-				tiles[x][y] = 0;
-				if(mouseX >= tileX && mouseX <= tileX + size && mouseY >= tileY && mouseY <= tileY + size) {
-					tiles[x][y] = 1;
-				}
-			}
-		}
+		
+		map.update(tslf);
 	}
 
 	@Override
@@ -85,23 +63,7 @@ public class MapEditor extends GameBase{
 
 		g.translate(-(int)camera.getX(), -(int)camera.getY());
 
-		//Fill tiles
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				int value = tiles[x][y];
-				if(value == 0) continue;
-				g.setColor(MOUSE_OVER);
-				g.fillRect(x * size, y * size, size, size);
-			}
-		}
-
-		//Draw Outline
-		g.setColor(Color.BLACK);
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				g.drawRect(x * size, y * size, size, size);
-			}
-		}
+		map.draw(g);
 	}
 
 	public void drawBackground(Graphics g) {
