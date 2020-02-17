@@ -15,6 +15,9 @@ public class Camera {
 	private float velocity = 2.0f; 
 	private float setValue = 0.5f;
 	
+	private float offsetX = 0;
+	private float offsetY = 180; //to rather keep the camera down
+	
 	public Camera(int width, int height) {
 		this.position = new Vector2D();
 		this.width = width;
@@ -23,8 +26,8 @@ public class Camera {
 	
 	public void update(float tslf) {
 		if(player != null) {
-			float goalX = player.getX() + player.getWidth()/2 - Main.SCREEN_WIDTH/2;
-			float goalY = player.getY() + player.getHeight()/2 - Main.SCREEN_HEIGHT/2;
+			float goalX = player.getX() + player.getWidth()/2 - Main.SCREEN_WIDTH/2 + offsetX;
+			float goalY = player.getY() + player.getHeight()/2 - Main.SCREEN_HEIGHT/2 + offsetY;
 			
 			//Calculating the differences between the goal position and the current position of the camera
 			float diffX = goalX - position.x;
