@@ -11,7 +11,7 @@ public class SolidTile extends Tile{
 	
 	public SolidTile(float x, float y, int size) {
 		super(x, y, size);
-		this.hitbox = new RectHitbox(x , y, 0, 20, size, size);
+		this.hitbox = new RectHitbox(x , y, 0, 20, size, size+20);
 	}
 	
 	@Override
@@ -20,6 +20,8 @@ public class SolidTile extends Tile{
 		g.fillRect((int)position.x, (int)position.y, size, size);
 		g.setColor(Color.BLACK);
 		g.drawRect((int)position.x, (int)position.y, size, size);
+		
+		hitbox.draw(g);
 	}
 	
 	//-----------------------------------Getters

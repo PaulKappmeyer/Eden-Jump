@@ -41,5 +41,7 @@ public class Player extends PhysicsObject{
 	public void draw(Graphics g) {
 		g.setColor(Color.YELLOW);
 		MyGraphics.fillRectWithOutline(g, (int)getX(), (int)getY(), width, height);
+		
+		hitbox.draw(g);
 	}
 }
