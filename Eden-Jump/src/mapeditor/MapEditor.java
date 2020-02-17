@@ -29,6 +29,8 @@ class MapEditor extends GameBase{
 
 	private int screenSplit = 1000;
 	
+	public static Palette palette;
+	
 	public static void main(String[] args) {
 		MapEditor mapeditor = new MapEditor();
 		mapeditor.start("MapEditor Eden Jump", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -40,6 +42,8 @@ class MapEditor extends GameBase{
 		camera = new Camera(screenSplit, SCREEN_HEIGHT);
 		oldMousePosition = new Vector2D();
 		oldCameraPosition = new Vector2D();
+		
+		palette = new Palette(screenSplit + 10, 10);
 	}
 
 	@Override
@@ -47,6 +51,7 @@ class MapEditor extends GameBase{
 		float mouseX = MouseInputManager.getMouseX();
 		float mouseY = MouseInputManager.getMouseY();
 
+		//Scrolling on the map
 		if(MouseInputManager.isButtonDown(MouseEvent.BUTTON3)) {
 			if(!isPressed) {
 				oldCameraPosition.x = camera.getX();
@@ -61,8 +66,10 @@ class MapEditor extends GameBase{
 			isPressed = false;
 		}
 
+		//Updating the map
 		map.update(tslf);
 
+		//Saving the map
 		if(KeyboardInputManager.isKeyDown(KeyEvent.VK_CONTROL) && KeyboardInputManager.isKeyDown(KeyEvent.VK_S)) {
 			if(!saved) {
 				try {
@@ -75,6 +82,9 @@ class MapEditor extends GameBase{
 		}else {
 			saved = false;
 		}
+		
+		//Updating the palette
+		palette.update(tslf);
 	}
 
 	@Override
@@ -94,6 +104,8 @@ class MapEditor extends GameBase{
 		//Draw Screen-split line
 		g.setColor(Color.BLACK);
 		g.drawLine(screenSplit, 0, screenSplit, SCREEN_HEIGHT);
+		
+		palette.draw(g);
 	}
 
 	public void drawBackground(Graphics g) {

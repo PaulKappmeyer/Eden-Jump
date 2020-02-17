@@ -1,5 +1,6 @@
 package mapeditor;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 class EditorTile {
@@ -7,12 +8,14 @@ class EditorTile {
 	private int y;
 	private int size;
 	private int value;
+	private Color color;
 	
 	public EditorTile(int x, int y, int size) {
 		this.x = x;
 		this.y = y;
 		this.size = size;
-		this.value = EditorTiledMap.AIR;
+		this.value = 0;
+		this.color = Color.WHITE;
 	}
 	
 	public void drawOutline(Graphics g) {
@@ -38,5 +41,13 @@ class EditorTile {
 	
 	public void setValue(int value) {
 		this.value = value;
+	}
+	
+	public Color getColor() {
+		return color;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
 	}
 }

@@ -8,8 +8,6 @@ import gameengine.input.MouseInputManager;
 
 class EditorTiledMap {
 	public static final Color MOUSE_OVER = new Color(0, 255, 0, 100);
-	public static final int AIR = 0;
-	public static final int SOLID = 1;
 
 	private EditorTile[][] tiles;
 	private int width; //width of the map in number of tiles
@@ -44,7 +42,8 @@ class EditorTiledMap {
 		if(mouseOver != null) {
 			if(MapEditor.camera.isVisibleOnCamera(mouseOver.getX(), mouseOver.getY(), mouseOver.getSize(), mouseOver.getSize())) { 
 				if(MouseInputManager.isButtonDown(MouseEvent.BUTTON1)) {
-					mouseOver.setValue(SOLID);
+					mouseOver.setValue(MapEditor.palette.getSelectedPaletteTile().getValue());
+					mouseOver.setColor(MapEditor.palette.getSelectedPaletteTile().getColor());
 				}
 			}
 		}
@@ -58,7 +57,8 @@ class EditorTiledMap {
 				EditorTile tile = tiles[x][y];
 
 				if(!MapEditor.camera.isVisibleOnCamera(tile.getX(), tile.getY(), tile.getSize(), tile.getSize())) continue;
-				if(tile.getValue() == SOLID) g.fillRect(tile.getX(), tile.getY(), tileSize, tileSize);
+				g.setColor(tile.getColor());
+				g.fillRect(tile.getX(), tile.getY(), tileSize, tileSize);
 			}
 		}
 
