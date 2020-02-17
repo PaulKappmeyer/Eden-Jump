@@ -6,25 +6,25 @@ import java.awt.event.MouseEvent;
 
 import gameengine.input.MouseInputManager;
 
-class TiledMap {
+class EditorTiledMap {
 	public static final Color MOUSE_OVER = new Color(0, 255, 0, 100);
 	public static final int AIR = 0;
 	public static final int SOLID = 1;
 
-	private Tile[][] tiles;
+	private EditorTile[][] tiles;
 	private int width; //width of the map in number of tiles
 	private int height; //height of the map in number of tiles
 	private int tileSize; //the size of one tile;
 
-	private Tile mouseOver;
+	private EditorTile mouseOver;
 
-	public TiledMap(int width, int height, int tileSize) {
+	public EditorTiledMap(int width, int height, int tileSize) {
 		this.width = width;
 		this.height = height;
-		this.tiles = new Tile[width][height];
+		this.tiles = new EditorTile[width][height];
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				tiles[x][y] = new Tile(x * tileSize, y * tileSize, tileSize);
+				tiles[x][y] = new EditorTile(x * tileSize, y * tileSize, tileSize);
 			}
 		}
 		this.tileSize = tileSize;
@@ -34,32 +34,41 @@ class TiledMap {
 		float mouseX = MouseInputManager.getMouseX();
 		float mouseY = MouseInputManager.getMouseY();
 
+		//Highlight the tile the mouse is on
 		mouseOver = null;
 		int tileX = (int) ((mouseX + MapEditor.camera.getX()) / tileSize);
 		int tileY = (int) ((mouseY + MapEditor.camera.getY()) / tileSize);
 		if(tileX >= 0 && tileX < width && tileY >= 0 && tileY < height) mouseOver = tiles[tileX][tileY];
 
+		//Set value when tile is selected
 		if(mouseOver != null) {
-			if(MouseInputManager.isButtonDown(MouseEvent.BUTTON1)) {
-				mouseOver.setValue(SOLID);
+			if(MapEditor.camera.isVisibleOnCamera(mouseOver.getX(), mouseOver.getY(), mouseOver.getSize(), mouseOver.getSize())) { 
+				if(MouseInputManager.isButtonDown(MouseEvent.BUTTON1)) {
+					mouseOver.setValue(SOLID);
+				}
 			}
 		}
 	}
 
 	public void draw(Graphics g) {
+		//Fill tiles
 		g.setColor(Color.LIGHT_GRAY);
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				Tile tile = tiles[x][y];
+				EditorTile tile = tiles[x][y];
+
+				if(!MapEditor.camera.isVisibleOnCamera(tile.getX(), tile.getY(), tile.getSize(), tile.getSize())) continue;
 				if(tile.getValue() == SOLID) g.fillRect(tile.getX(), tile.getY(), tileSize, tileSize);
 			}
 		}
 
+		//Highlight the tile the mouse is on
 		if(mouseOver != null) {
 			g.setColor(MOUSE_OVER);
 			g.fillRect(mouseOver.getX(), mouseOver.getY(), tileSize, tileSize);
 		}
 
+		//Draw outlines
 		drawOutlines(g);
 	}
 
@@ -67,25 +76,28 @@ class TiledMap {
 		g.setColor(Color.BLACK);
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				tiles[x][y].drawOutline(g);
+				EditorTile tile = tiles[x][y];
+
+				if(!MapEditor.camera.isVisibleOnCamera(tile.getX(), tile.getY(), tile.getSize(), tile.getSize())) continue;
+				tile.drawOutline(g);
 			}
 		}
 	}
-	
+
 	//------------------------------------------Getters
 	public int getWidth() {
 		return width;
 	}
-	
+
 	public int getHeight() {
 		return height;
 	}
-	
+
 	public int getTileSize() {
 		return tileSize;
 	}
-	
-	public Tile[][] getTiles() {
+
+	public EditorTile[][] getTiles() {
 		return tiles;
 	}
 }

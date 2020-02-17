@@ -23,10 +23,12 @@ class MapEditor extends GameBase{
 	private Vector2D oldMousePosition; //saves position of the mouse when mouse is dragged
 	private Vector2D oldCameraPosition; //saves position of the camera when mouse is dragged
 
-	private TiledMap map;
+	private EditorTiledMap map;
 
 	private boolean saved = false;
 
+	private int screenSplit = 1000;
+	
 	public static void main(String[] args) {
 		MapEditor mapeditor = new MapEditor();
 		mapeditor.start("MapEditor Eden Jump", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -34,8 +36,8 @@ class MapEditor extends GameBase{
 
 	@Override
 	public void init() {
-		map = new TiledMap(100, 10, 50);
-		camera = new Camera();
+		map = new EditorTiledMap(100, 10, 50);
+		camera = new Camera(screenSplit, SCREEN_HEIGHT);
 		oldMousePosition = new Vector2D();
 		oldCameraPosition = new Vector2D();
 	}
@@ -82,6 +84,16 @@ class MapEditor extends GameBase{
 		g.translate(-(int)camera.getX(), -(int)camera.getY());
 
 		map.draw(g);
+		
+		g.translate(+(int)camera.getX(), +(int)camera.getY());
+		
+		//Fill background
+		g.setColor(Color.WHITE);
+		g.fillRect(screenSplit, 0, SCREEN_WIDTH-screenSplit, SCREEN_HEIGHT);
+		
+		//Draw Screen-split line
+		g.setColor(Color.BLACK);
+		g.drawLine(screenSplit, 0, screenSplit, SCREEN_HEIGHT);
 	}
 
 	public void drawBackground(Graphics g) {

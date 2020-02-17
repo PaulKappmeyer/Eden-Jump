@@ -2,17 +2,17 @@ package mapeditor;
 
 import java.awt.Graphics;
 
-class Tile {
+class EditorTile {
 	private int x;
 	private int y;
 	private int size;
 	private int value;
 	
-	public Tile(int x, int y, int size) {
+	public EditorTile(int x, int y, int size) {
 		this.x = x;
 		this.y = y;
 		this.size = size;
-		this.value = TiledMap.AIR;
+		this.value = EditorTiledMap.AIR;
 	}
 	
 	public void drawOutline(Graphics g) {
@@ -26,6 +26,10 @@ class Tile {
 	
 	public int getY() {
 		return y;
+	}
+	
+	public int getSize() {
+		return size;
 	}
 	
 	public int getValue() {

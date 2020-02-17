@@ -9,11 +9,16 @@ public class Camera {
 	private Vector2D position;
 	private Player player;
 	
+	private int width;
+	private int height;
+	
 	private float velocity = 2.0f; 
 	private float setValue = 0.5f;
 	
-	public Camera() {
+	public Camera(int width, int height) {
 		this.position = new Vector2D();
+		this.width = width;
+		this.height = height;
 	}
 	
 	public void update(float tslf) {
@@ -41,7 +46,7 @@ public class Camera {
 	}
 	
 	public boolean isVisibleOnCamera(float x, float y, int width, int height) {
-		if(x + width > position.x && x < position.x + Main.SCREEN_WIDTH && y + height > position.y && y < position.y + Main.SCREEN_HEIGHT) return true;
+		if(x + width > position.x && x < position.x + this.width && y + height > position.y && y < position.y + this.height) return true;
 		return false;
 	}
 	

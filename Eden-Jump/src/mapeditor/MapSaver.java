@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 
 class MapSaver {
 
-	public static void wirteMap(TiledMap map) throws FileNotFoundException {
+	public static void wirteMap(EditorTiledMap map) throws FileNotFoundException {
 
 		PrintWriter printWriter = new PrintWriter(".\\maps\\map.txt");
 

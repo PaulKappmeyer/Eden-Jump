@@ -39,7 +39,7 @@ public class Main extends GameBase{
 			e.printStackTrace();
 		}
 
-		camera = new Camera();
+		camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 		camera.setFocusedObject(player);
 	}
 
