@@ -12,11 +12,13 @@ public class Camera {
 	private int width;
 	private int height;
 	
-	private float velocity = 2.0f; 
+	private float velocityX = 3.0f; 
+	private float velocityY = 1.3f;
+	
 	private float setValue = 0.5f;
 	
 	private float offsetX = 0;
-	private float offsetY = 180; //to rather keep the camera down
+	private float offsetY = 130; //to rather keep the camera down
 	
 	public Camera(int width, int height) {
 		this.position = new Vector2D();
@@ -31,11 +33,11 @@ public class Camera {
 			
 			//Calculating the differences between the goal position and the current position of the camera
 			float diffX = goalX - position.x;
-			float amountX = diffX * velocity;
+			float amountX = diffX * velocityX;
 			position.x += amountX * tslf;
 
 			float diffY = goalY - position.y;
-			float amountY = diffY * velocity;
+			float amountY = diffY * velocityY;
 			position.y += amountY * tslf;
 			
 			//At this point the difference is too small so the value gets set to avoid shaking of the camera
