@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 import gameengine.GameBase;
-import gameengine.PhysicsObject;
 import gameengine.graphics.Camera;
 import gameengine.input.KeyboardInputManager;
 import gameengine.loaders.MapLoader;
@@ -28,10 +27,9 @@ public class Main extends GameBase{
 
 	@Override
 	public void init() {
+		GameResources.load();
+		
 		player = new Player(400, 400);
-		player.walkSpeed = 500;
-		player.jumpPower = 2300;
-		PhysicsObject.GRAVITY = 70;
 
 		try {
 			map = MapLoader.loadMap(".\\maps\\map.txt");

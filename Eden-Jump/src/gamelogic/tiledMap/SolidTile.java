@@ -1,23 +1,24 @@
 package gamelogic.tiledMap;
 
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 import gameengine.hitbox.RectHitbox;
+import gamelogic.GameResources;
 
 public class SolidTile extends Tile{
+	
+	private BufferedImage image;
 	
 	public SolidTile(float x, float y, int size) {
 		super(x, y, size);
 		this.hitbox = new RectHitbox(x , y, 0, 20, size, size);
+		this.image = GameResources.solid;
 	}
 	
 	@Override
 	public void draw(Graphics g) {
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect((int)position.x, (int)position.y, size, size);
-		g.setColor(Color.BLACK);
-		g.drawRect((int)position.x, (int)position.y, size, size);
+		g.drawImage(image, (int)position.x, (int)position.y, size, size, null);
 		
 		hitbox.draw(g);
 	}

@@ -26,7 +26,7 @@ public class MapLoader {
 		}
 		bufferedReader.close();
 		
-		Map map = new Map(width, height, tiles);
+		Map map = new Map(width, height, tileSize, tiles);
 		
 		return map;
 	}

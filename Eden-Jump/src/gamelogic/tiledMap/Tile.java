@@ -15,10 +15,6 @@ public class Tile {
 		this.position = new Vector2D();
 	}
 	
-	public Tile(float x, float y) {
-		this.position = new Vector2D(x, y);
-	}
-	
 	public Tile(float x, float y, int size) {
 		this.position = new Vector2D(x, y);
 		this.size = size;

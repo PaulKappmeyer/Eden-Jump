@@ -11,14 +11,16 @@ public class Map {
 	private int fullWidth; //size in pixels
 	private int fullHeight; //size in pixels
 	private Tile[][] tiles;
+	private int tileSize;
 	
-	public Map(int width, int height, Tile[][]tiles) {
+	public Map(int width, int height, int tileSize, Tile[][]tiles) {
 		this.width = width;
 		this.height = height;
 		this.tiles = tiles;
-		tiles[1][8] = new Spikes(100, 800, Spikes.HORIZONTAL_UPWARDS);
-		this.fullWidth = width * tiles[0][0].getSize();
-		this.fullHeight = height * tiles[0][0].getSize();
+		this.tileSize = tileSize;
+		tiles[1][8] = new Spikes(100, 800, tileSize, Spikes.HORIZONTAL_UPWARDS);
+		this.fullWidth = width * tileSize;
+		this.fullHeight = height * tileSize;
 	}
 	
 	public void draw(Graphics g) {
@@ -32,6 +34,10 @@ public class Map {
 	}
 	
 	//-----------------------------------------------------Getters
+	public int getTileSize() {
+		return tileSize;
+	}
+	
 	public int getWidth() {
 		return width;
 	}
