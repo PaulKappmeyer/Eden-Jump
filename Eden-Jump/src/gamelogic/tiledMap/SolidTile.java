@@ -12,7 +12,7 @@ public class SolidTile extends Tile{
 	
 	public SolidTile(float x, float y, int size) {
 		super(x, y, size);
-		this.hitbox = new RectHitbox(x , y, 0, 20, size, size);
+		this.hitbox = new RectHitbox(x , y, 0, 0, size, size);
 		this.image = GameResources.solid;
 	}
 	

@@ -6,10 +6,12 @@ import java.awt.event.KeyEvent;
 
 import gameengine.GameBase;
 import gameengine.graphics.Camera;
+import gameengine.hitbox.CollisionMatrix;
 import gameengine.input.KeyboardInputManager;
 import gameengine.loaders.MapLoader;
 import gamelogic.player.Player;
 import gamelogic.tiledMap.Map;
+import gamelogic.tiledMap.Spikes;
 
 public class Main extends GameBase{
 
@@ -54,7 +56,13 @@ public class Main extends GameBase{
 
 		player.update(tslf);
 		
+		//Player death
 		if(map.getFullHeight() + 100 < player.getY()) restart();
+		
+		if(player.getCollisionMatrix()[CollisionMatrix.BOT] instanceof Spikes) restart();
+		if(player.getCollisionMatrix()[CollisionMatrix.TOP] instanceof Spikes) restart();
+		if(player.getCollisionMatrix()[CollisionMatrix.LEF] instanceof Spikes) restart();
+		if(player.getCollisionMatrix()[CollisionMatrix.RIG] instanceof Spikes) restart();
 		
 		camera.update(tslf);
 	}
