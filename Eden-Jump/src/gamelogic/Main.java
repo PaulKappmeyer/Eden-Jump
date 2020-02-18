@@ -42,6 +42,12 @@ public class Main extends GameBase{
 		camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 		camera.setFocusedObject(player);
 	}
+	
+	public void restart() {
+		player = new Player(400, 400);
+		camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
+		camera.setFocusedObject(player);
+	}
 
 	@Override
 	public void update(float tslf) {
@@ -50,6 +56,8 @@ public class Main extends GameBase{
 
 		player.update(tslf);
 
+		if(map.getFullHeight() + 100 < player.getY()) restart();
+		
 		camera.update(tslf);
 	}
 
@@ -63,7 +71,7 @@ public class Main extends GameBase{
 
 		player.draw(g);
 		
-		camera.draw(g);
+		//camera.draw(g); //used for debugging
 	}
 
 	public void drawBackground(Graphics g) {

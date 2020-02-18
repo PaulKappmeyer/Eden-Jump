@@ -8,12 +8,16 @@ public class Map {
 	
 	private int width; //size in number of tiles;
 	private int height; //size in number of tiles;
+	private int fullWidth; //size in pixels
+	private int fullHeight; //size in pixels
 	private Tile[][] tiles;
 	
 	public Map(int width, int height, Tile[][]tiles) {
 		this.width = width;
 		this.height = height;
 		this.tiles = tiles;
+		this.fullWidth = width * tiles[0][0].getSize();
+		this.fullHeight = height * tiles[0][0].getSize();
 	}
 	
 	public void draw(Graphics g) {
@@ -33,6 +37,14 @@ public class Map {
 	
 	public int getHeight() {
 		return height;
+	}
+	
+	public int getFullWidth() {
+		return fullWidth;
+	}
+	
+	public int getFullHeight() {
+		return fullHeight;
 	}
 	
 	public Tile[][] getTiles() {
