@@ -20,8 +20,8 @@ public class RectHitbox extends Hitbox{
 		this.position = new Vector2D(object.getX() + offsetX, object.getY() + offsetY);
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
-		this.width = (int) (width - offsetX*2);
-		this.height = (int) (height - offsetY*2);
+		this.width = (int) (width - offsetX);
+		this.height = (int) (height - offsetY);
 	}
 
 	public RectHitbox(float x, float y, float offsetX, float offsetY, int width, int height) {
@@ -29,8 +29,8 @@ public class RectHitbox extends Hitbox{
 		this.position = new Vector2D(x + offsetX, y + offsetY);
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
-		this.width = (int) (width - offsetX*2);
-		this.height = (int) (height - offsetY*2);
+		this.width = (int) (width - offsetX);
+		this.height = (int) (height - offsetY);
 	}
 
 	@Override

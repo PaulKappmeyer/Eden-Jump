@@ -2,12 +2,14 @@ package gamelogic.tiledMap;
 
 import java.awt.Graphics;
 
+import gameengine.hitbox.RectHitbox;
 import gameengine.maths.Vector2D;
 
 public class Tile {
 
 	protected Vector2D position;
 	protected int size;
+	protected RectHitbox hitbox;
 	
 	public Tile() {
 		this.position = new Vector2D();
@@ -28,6 +30,10 @@ public class Tile {
 	
 	
 	//------------------------------------Getters
+	public RectHitbox getHitbox() {
+		return hitbox;
+	}
+	
 	public float getX() {
 		return position.x;
 	}

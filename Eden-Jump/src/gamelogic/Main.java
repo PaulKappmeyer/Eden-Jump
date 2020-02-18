@@ -20,7 +20,7 @@ public class Main extends GameBase{
 	public static Player player;
 	public static Camera camera;
 	public static Map map;
-
+	
 	public static void main(String[] args) {
 		Main main = new Main();
 		main.start("Eden Jump", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -38,7 +38,7 @@ public class Main extends GameBase{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
 		camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 		camera.setFocusedObject(player);
 	}
@@ -55,7 +55,7 @@ public class Main extends GameBase{
 		if(KeyboardInputManager.isKeyDown(KeyEvent.VK_ESCAPE)) System.exit(0);
 
 		player.update(tslf);
-
+		
 		if(map.getFullHeight() + 100 < player.getY()) restart();
 		
 		camera.update(tslf);
@@ -68,7 +68,7 @@ public class Main extends GameBase{
 		g.translate((int)-camera.getX(), (int)-camera.getY());
 
 		map.draw(g);
-
+		
 		player.draw(g);
 		
 		//camera.draw(g); //used for debugging

@@ -6,12 +6,10 @@ import java.awt.Graphics;
 import gameengine.hitbox.RectHitbox;
 
 public class SolidTile extends Tile{
-
-	private RectHitbox hitbox;
 	
 	public SolidTile(float x, float y, int size) {
 		super(x, y, size);
-		this.hitbox = new RectHitbox(x , y, 0, 20, size, size+20);
+		this.hitbox = new RectHitbox(x , y, 0, 20, size, size);
 	}
 	
 	@Override
@@ -22,10 +20,5 @@ public class SolidTile extends Tile{
 		g.drawRect((int)position.x, (int)position.y, size, size);
 		
 		hitbox.draw(g);
-	}
-	
-	//-----------------------------------Getters
-	public RectHitbox getHitbox() {
-		return hitbox;
 	}
 }
