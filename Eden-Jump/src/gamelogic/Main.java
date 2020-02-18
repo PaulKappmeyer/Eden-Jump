@@ -62,6 +62,8 @@ public class Main extends GameBase{
 		map.draw(g);
 
 		player.draw(g);
+		
+		camera.draw(g);
 	}
 
 	public void drawBackground(Graphics g) {

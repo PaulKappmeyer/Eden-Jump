@@ -147,4 +147,12 @@ public class PhysicsObject extends GameObject{
 		this.collisionMatrix = matrix; //Set the matrix
 	}
 
+	//-----------------------------------------------------Getters
+	public float getMovementX() {
+		return movementVector.x;
+	}
+	
+	public float getMovementY() {
+		return movementVector.y;
+	}
 }
