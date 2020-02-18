@@ -28,8 +28,11 @@ class MapEditor extends GameBase{
 	private boolean saved = false;
 
 	private int screenSplit = 1000;
-	
-	public static Palette palette;
+
+	public Palette paletteTiles; // index = 0;
+	public Palette paletteObjects; // index = 1;
+
+	private int selectedPalette = 0;
 	
 	public static void main(String[] args) {
 		MapEditor mapeditor = new MapEditor();
@@ -42,8 +45,20 @@ class MapEditor extends GameBase{
 		camera = new Camera(screenSplit, SCREEN_HEIGHT);
 		oldMousePosition = new Vector2D();
 		oldCameraPosition = new Vector2D();
-		
-		palette = new Palette(screenSplit + 10, 10);
+
+		PaletteItem[] paletteItems = new PaletteItem[35];
+		paletteItems[0] = new PaletteItem("Air", 0, Color.WHITE);
+		for (int i = 1; i < paletteItems.length; i++) {
+			paletteItems[i] = new PaletteItem("Solid", 1, Color.LIGHT_GRAY);
+		}
+		paletteTiles = new Palette(screenSplit + 15, 10, paletteItems);
+		paletteTiles.setSelectedIndex(0);
+
+		paletteItems = new PaletteItem[2];
+		paletteItems[0] = new PaletteItem("Player", 0, Color.YELLOW);
+		paletteItems[1] = new PaletteItem("Enemy", 0, Color.ORANGE);
+
+		paletteObjects = new Palette(screenSplit + 15, 400, paletteItems);
 	}
 
 	@Override
@@ -82,9 +97,43 @@ class MapEditor extends GameBase{
 		}else {
 			saved = false;
 		}
-		
+
 		//Updating the palette
-		palette.update(tslf);
+		paletteTiles.update(tslf);
+		paletteObjects.update(tslf);
+
+		if(MouseInputManager.isButtonDown(MouseEvent.BUTTON1)) {
+			if(paletteTiles.getX() < mouseX && mouseX < paletteTiles.getX() + paletteTiles.getWidth() && paletteTiles.getY() < mouseY && mouseY < paletteTiles.getY() + paletteTiles.getHeight()) {
+				selectedPalette = 0;
+				paletteObjects.setSelectedIndex(-1);
+			}
+			if(paletteObjects.getX() < mouseX && mouseX < paletteObjects.getX() + paletteObjects.getWidth() && paletteObjects.getY() < mouseY && mouseY < paletteObjects.getY() + paletteObjects.getHeight()) {
+				selectedPalette = 1;
+				paletteTiles.setSelectedIndex(-1);
+			}
+		}
+		
+		//Set value when tile is selected
+		if(selectedPalette == 0) {
+			EditorTile mouseOver = map.getMouseOver();
+			if(mouseOver != null) {
+				if(camera.isVisibleOnCamera(mouseOver.getX(), mouseOver.getY(), mouseOver.getSize(), mouseOver.getSize())) { 
+					if(MouseInputManager.isButtonDown(MouseEvent.BUTTON1)) {
+						mouseOver.setValue(paletteTiles.getSelectedPaletteItem().getValue());
+						mouseOver.setColor(paletteTiles.getSelectedPaletteItem().getColor());
+					}
+				}
+			}
+		} else if(selectedPalette == 1) {
+			EditorTile mouseOver = map.getMouseOver();
+			if(mouseOver != null) {
+				if(camera.isVisibleOnCamera(mouseOver.getX(), mouseOver.getY(), mouseOver.getSize(), mouseOver.getSize())) { 
+					if(MouseInputManager.isButtonDown(MouseEvent.BUTTON1) && paletteObjects.getSelectedPaletteItem().getName().equals("Player")) {
+						map.setPlayerPositon(map.getMouseTileX(), map.getMouseTileY());
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -96,7 +145,7 @@ class MapEditor extends GameBase{
 		map.draw(g);
 		
 		g.translate(+(int)camera.getX(), +(int)camera.getY());
-		
+
 		//Fill background
 		g.setColor(Color.WHITE);
 		g.fillRect(screenSplit, 0, SCREEN_WIDTH-screenSplit, SCREEN_HEIGHT);
@@ -104,8 +153,9 @@ class MapEditor extends GameBase{
 		//Draw Screen-split line
 		g.setColor(Color.BLACK);
 		g.drawLine(screenSplit, 0, screenSplit, SCREEN_HEIGHT);
-		
-		palette.draw(g);
+
+		paletteTiles.draw(g);
+		paletteObjects.draw(g);
 	}
 
 	public void drawBackground(Graphics g) {

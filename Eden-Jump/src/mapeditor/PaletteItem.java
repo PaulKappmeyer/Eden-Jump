@@ -2,13 +2,13 @@ package mapeditor;
 
 import java.awt.Color;
 
-class PaletteTile {
+class PaletteItem {
 
 	private String name;
 	private int value;
 	private Color color;
 	
-	public PaletteTile(String name, int value, Color color) {
+	public PaletteItem(String name, int value, Color color) {
 		this.name = name;
 		this.value = value;
 		this.color = color;

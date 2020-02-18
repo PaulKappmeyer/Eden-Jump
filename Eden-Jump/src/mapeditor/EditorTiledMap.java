@@ -2,7 +2,6 @@ package mapeditor;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
 
 import gameengine.input.MouseInputManager;
 
@@ -15,6 +14,11 @@ class EditorTiledMap {
 	private int tileSize; //the size of one tile;
 
 	private EditorTile mouseOver;
+	private int mouseTileX;
+	private int mouseTileY;
+
+	private int playerX = 0;
+	private int playerY = 0;
 
 	public EditorTiledMap(int width, int height, int tileSize) {
 		this.width = width;
@@ -36,16 +40,10 @@ class EditorTiledMap {
 		mouseOver = null;
 		int tileX = (int) ((mouseX + MapEditor.camera.getX()) / tileSize);
 		int tileY = (int) ((mouseY + MapEditor.camera.getY()) / tileSize);
-		if(tileX >= 0 && tileX < width && tileY >= 0 && tileY < height) mouseOver = tiles[tileX][tileY];
-
-		//Set value when tile is selected
-		if(mouseOver != null) {
-			if(MapEditor.camera.isVisibleOnCamera(mouseOver.getX(), mouseOver.getY(), mouseOver.getSize(), mouseOver.getSize())) { 
-				if(MouseInputManager.isButtonDown(MouseEvent.BUTTON1)) {
-					mouseOver.setValue(MapEditor.palette.getSelectedPaletteTile().getValue());
-					mouseOver.setColor(MapEditor.palette.getSelectedPaletteTile().getColor());
-				}
-			}
+		if(tileX >= 0 && tileX < width && tileY >= 0 && tileY < height) {
+			mouseOver = tiles[tileX][tileY];
+			mouseTileX = tileX;
+			mouseTileY = tileY;
 		}
 	}
 
@@ -61,6 +59,10 @@ class EditorTiledMap {
 				g.fillRect(tile.getX(), tile.getY(), tileSize, tileSize);
 			}
 		}
+
+		//Player position
+		g.setColor(new Color(0, 255, 255, 100));
+		g.fillRect(playerX*tileSize + 5, playerY*tileSize + 5, tileSize - 10, tileSize - 10);
 
 		//Highlight the tile the mouse is on
 		if(mouseOver != null) {
@@ -85,6 +87,23 @@ class EditorTiledMap {
 	}
 
 	//------------------------------------------Getters
+	public int getMouseTileX() {
+		return mouseTileX;
+	}
+	
+	public int getMouseTileY() {
+		return mouseTileY;
+	}
+	
+	public EditorTile getMouseOver() {
+		return mouseOver;
+	}
+
+	public void setPlayerPositon(int x, int y) {
+		this.playerX = x;
+		this.playerY = y;
+	}
+
 	public int getWidth() {
 		return width;
 	}
