@@ -11,6 +11,7 @@ import gameengine.graphics.Camera;
 import gameengine.input.KeyboardInputManager;
 import gameengine.input.MouseInputManager;
 import gameengine.maths.Vector2D;
+import gamelogic.GameResources;
 
 class MapEditor extends GameBase{
 
@@ -41,22 +42,27 @@ class MapEditor extends GameBase{
 
 	@Override
 	public void init() {
+		GameResources.load();
+		
 		map = new EditorTiledMap(100, 10, 50);
 		camera = new Camera(screenSplit, SCREEN_HEIGHT);
 		oldMousePosition = new Vector2D();
 		oldCameraPosition = new Vector2D();
 
-		PaletteItem[] paletteItems = new PaletteItem[35];
-		paletteItems[0] = new PaletteItem("Air", 0, Color.WHITE);
-		for (int i = 1; i < paletteItems.length; i++) {
-			paletteItems[i] = new PaletteItem("Solid", 1, Color.LIGHT_GRAY);
-		}
+		PaletteItem[] paletteItems = new PaletteItem[6];
+		paletteItems[0] = new PaletteItem("Air", 0, null);
+		paletteItems[1] = new PaletteItem("Solid", 1, GameResources.solid);
+		paletteItems[2] = new PaletteItem("Spikes_downwards", 2, GameResources.spikes_downwards);
+		paletteItems[3] = new PaletteItem("Spikes_upwards", 3, GameResources.spikes_upwards);
+		paletteItems[4] = new PaletteItem("Spikes_leftwards", 4, GameResources.spikes_leftwards);
+		paletteItems[5] = new PaletteItem("Spikes_rightwards", 5, GameResources.spikes_rightwards);
+		
 		paletteTiles = new Palette(screenSplit + 15, 10, paletteItems);
 		paletteTiles.setSelectedIndex(0);
 
 		paletteItems = new PaletteItem[2];
-		paletteItems[0] = new PaletteItem("Player", 0, Color.YELLOW);
-		paletteItems[1] = new PaletteItem("Enemy", 0, Color.ORANGE);
+		paletteItems[0] = new PaletteItem("Player", 0, null);
+		paletteItems[1] = new PaletteItem("Enemy", 0, null);
 
 		paletteObjects = new Palette(screenSplit + 15, 400, paletteItems);
 	}
@@ -120,7 +126,7 @@ class MapEditor extends GameBase{
 				if(camera.isVisibleOnCamera(mouseOver.getX(), mouseOver.getY(), mouseOver.getSize(), mouseOver.getSize())) { 
 					if(MouseInputManager.isButtonDown(MouseEvent.BUTTON1)) {
 						mouseOver.setValue(paletteTiles.getSelectedPaletteItem().getValue());
-						mouseOver.setColor(paletteTiles.getSelectedPaletteItem().getColor());
+						mouseOver.setImage(paletteTiles.getSelectedPaletteItem().getImage());
 					}
 				}
 			}

@@ -1,21 +1,21 @@
 package mapeditor;
 
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 class EditorTile {
 	private int x;
 	private int y;
 	private int size;
 	private int value;
-	private Color color;
+	private BufferedImage image;
 	
 	public EditorTile(int x, int y, int size) {
 		this.x = x;
 		this.y = y;
 		this.size = size;
 		this.value = 0;
-		this.color = Color.WHITE;
+		this.image = null;
 	}
 	
 	public void drawOutline(Graphics g) {
@@ -43,11 +43,11 @@ class EditorTile {
 		this.value = value;
 	}
 	
-	public Color getColor() {
-		return color;
+	public BufferedImage getImage() {
+		return image;
 	}
 	
-	public void setColor(Color color) {
-		this.color = color;
+	public void setImage(BufferedImage image) {
+		this.image = image;
 	}
 }

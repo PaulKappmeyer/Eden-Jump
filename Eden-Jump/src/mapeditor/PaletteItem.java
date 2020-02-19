@@ -1,17 +1,17 @@
 package mapeditor;
 
-import java.awt.Color;
+import java.awt.image.BufferedImage;
 
 class PaletteItem {
 
 	private String name;
 	private int value;
-	private Color color;
+	private BufferedImage image;
 	
-	public PaletteItem(String name, int value, Color color) {
+	public PaletteItem(String name, int value, BufferedImage image) {
 		this.name = name;
 		this.value = value;
-		this.color = color;
+		this.image = image;
 	}
 	
 	
@@ -24,7 +24,7 @@ class PaletteItem {
 		return value;
 	}
 	
-	public Color getColor() {
-		return color;
+	public BufferedImage getImage() {
+		return image;
 	}
 }

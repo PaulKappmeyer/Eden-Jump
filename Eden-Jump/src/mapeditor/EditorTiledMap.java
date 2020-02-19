@@ -55,8 +55,7 @@ class EditorTiledMap {
 				EditorTile tile = tiles[x][y];
 
 				if(!MapEditor.camera.isVisibleOnCamera(tile.getX(), tile.getY(), tile.getSize(), tile.getSize())) continue;
-				g.setColor(tile.getColor());
-				g.fillRect(tile.getX(), tile.getY(), tileSize, tileSize);
+				if(tile.getImage() != null) g.drawImage(tile.getImage(), tile.getX(), tile.getY(), tileSize, tileSize, null);
 			}
 		}
 

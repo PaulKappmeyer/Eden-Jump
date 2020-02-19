@@ -15,8 +15,8 @@ public class Spikes extends Tile{
 	
 	private BufferedImage image;
 	
-	private int offsetX = 10;
-	private int offsetY = 60;
+	private int offsetX = 25;
+	private int offsetY = 70;
 	
 	public Spikes(float x, float y, int size, int orientation) {
 		super(x, y, size);

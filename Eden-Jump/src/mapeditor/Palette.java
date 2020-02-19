@@ -3,6 +3,7 @@ package mapeditor;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 import gameengine.input.MouseInputManager;
 import gameengine.maths.Vector2D;
@@ -53,8 +54,8 @@ class Palette {
 		g.translate((int)position.x, (int)position.y);
 		//fill
 		for (int i = 0; i < paletteItems.length; i++) {
-			g.setColor(paletteItems[i].getColor());
-			g.fillRect(i % tilesPerRow * tileSize, (int)(i/tilesPerRow) * tileSize, tileSize, tileSize);
+			BufferedImage image = paletteItems[i].getImage();
+			if(image != null) g.drawImage(image, i % tilesPerRow * tileSize, (int)(i/tilesPerRow) * tileSize, tileSize, tileSize, null);
 		}
 
 		//outlines

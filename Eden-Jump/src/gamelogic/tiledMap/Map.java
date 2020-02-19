@@ -18,7 +18,6 @@ public class Map {
 		this.height = height;
 		this.tiles = tiles;
 		this.tileSize = tileSize;
-		tiles[1][8] = new Spikes(100, 800, tileSize, Spikes.HORIZONTAL_UPWARDS);
 		this.fullWidth = width * tileSize;
 		this.fullHeight = height * tileSize;
 	}

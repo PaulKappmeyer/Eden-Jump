@@ -9,7 +9,7 @@ import gameengine.hitbox.CollisionMatrix;
 
 public class Player extends PhysicsObject{
 	public float walkSpeed = 500;
-	public float jumpPower = 2300;
+	public float jumpPower = 1800;
 
 	private boolean isJumping = false;
 
