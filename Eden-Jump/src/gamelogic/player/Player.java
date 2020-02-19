@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import gameengine.PhysicsObject;
 import gameengine.graphics.MyGraphics;
 import gameengine.hitbox.CollisionMatrix;
+import gameengine.hitbox.RectHitbox;
 
 public class Player extends PhysicsObject{
 	public float walkSpeed = 500;
@@ -15,6 +16,7 @@ public class Player extends PhysicsObject{
 
 	public Player(float x, float y) {
 		super(x, y, 100, 100);
+		this.hitbox = new RectHitbox(this, 10, 10, width - 10, height - 10);
 	}
 
 	@Override
