@@ -23,6 +23,11 @@ public class Main extends GameBase{
 	public static Map map;
 	private Leveldata leveldata;
 	
+	private boolean isPlayerAlive = true;
+	private ScreenTransition screenTransition = new ScreenTransition();
+	
+	private boolean DEBUGGING = false;
+	
 	public static void main(String[] args) {
 		Main main = new Main();
 		main.start("Eden Jump", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -47,27 +52,44 @@ public class Main extends GameBase{
 	}
 	
 	public void restart() {
+		if(DEBUGGING) {
+			restartLevel();
+			return;
+		}
+		isPlayerAlive = false;
+		screenTransition.activate();
+	}
+
+	public void restartLevel() {
 		player = new Player(leveldata.getPlayerX() * map.getTileSize(), leveldata.getPlayerY() * map.getTileSize());
 		camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 		camera.setFocusedObject(player);
+		isPlayerAlive = true;
 	}
-
+	
 	@Override
 	public void update(float tslf) {
 		if(KeyboardInputManager.isKeyDown(KeyEvent.VK_N)) init();
 		if(KeyboardInputManager.isKeyDown(KeyEvent.VK_ESCAPE)) System.exit(0);
 
-		player.update(tslf);
+		if(isPlayerAlive && !screenTransition.isActive()) {
+			player.update(tslf);
+			
+			//Player death
+			if(map.getFullHeight() + 100 < player.getY()) restart();
+			if(player.getCollisionMatrix()[CollisionMatrix.BOT] instanceof Spikes) restart();
+			if(player.getCollisionMatrix()[CollisionMatrix.TOP] instanceof Spikes) restart();
+			if(player.getCollisionMatrix()[CollisionMatrix.LEF] instanceof Spikes) restart();
+			if(player.getCollisionMatrix()[CollisionMatrix.RIG] instanceof Spikes) restart();
+			
+			camera.update(tslf);
+		}
 		
-		//Player death
-		if(map.getFullHeight() + 100 < player.getY()) restart();
-		
-		if(player.getCollisionMatrix()[CollisionMatrix.BOT] instanceof Spikes) restart();
-		if(player.getCollisionMatrix()[CollisionMatrix.TOP] instanceof Spikes) restart();
-		if(player.getCollisionMatrix()[CollisionMatrix.LEF] instanceof Spikes) restart();
-		if(player.getCollisionMatrix()[CollisionMatrix.RIG] instanceof Spikes) restart();
-		
-		camera.update(tslf);
+		screenTransition.update(tslf);
+		if(screenTransition.isActive() && !screenTransition.isActivating() && !screenTransition.isDeactivating()) {
+			restartLevel();
+			screenTransition.deactivate();
+		}
 	}
 
 	@Override
@@ -81,6 +103,10 @@ public class Main extends GameBase{
 		player.draw(g);
 		
 		//camera.draw(g); //used for debugging
+		
+		g.translate((int)+camera.getX(), (int)+camera.getY());
+		
+		screenTransition.draw(g);
 	}
 
 	public void drawBackground(Graphics g) {
