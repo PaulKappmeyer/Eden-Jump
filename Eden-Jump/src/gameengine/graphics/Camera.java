@@ -62,6 +62,10 @@ public class Camera {
 	
 	public void setFocusedObject(Player object) {
 		this.player = object;
+		float goalX = player.getX() + player.getWidth()/2 - Main.SCREEN_WIDTH/2 + offsetX;
+		float goalY = player.getY() + player.getHeight()/2 - Main.SCREEN_HEIGHT/2 + offsetY;
+		position.x = goalX;
+		position.y = goalY;
 	}
 	
 	public boolean isVisibleOnCamera(float x, float y, int width, int height) {

@@ -21,6 +21,7 @@ public class Main extends GameBase{
 	public static Player player;
 	public static Camera camera;
 	public static Map map;
+	private Leveldata leveldata;
 	
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -30,21 +31,23 @@ public class Main extends GameBase{
 	@Override
 	public void init() {
 		GameResources.load();
-		
-		player = new Player(400, 400);
 
+		leveldata = null;
 		try {
-			map = MapLoader.loadMap(".\\maps\\map.txt");
+			leveldata = MapLoader.loadMap(".\\maps\\map.txt");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		map = leveldata.getMap();
+		player = new Player(leveldata.getPlayerX() * map.getTileSize(), leveldata.getPlayerY() * map.getTileSize());
 		
 		camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 		camera.setFocusedObject(player);
 	}
 	
 	public void restart() {
-		player = new Player(400, 400);
+		player = new Player(leveldata.getPlayerX() * map.getTileSize(), leveldata.getPlayerY() * map.getTileSize());
 		camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 		camera.setFocusedObject(player);
 	}

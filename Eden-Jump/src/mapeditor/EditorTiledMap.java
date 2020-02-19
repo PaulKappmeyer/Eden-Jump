@@ -102,6 +102,14 @@ class EditorTiledMap {
 		this.playerX = x;
 		this.playerY = y;
 	}
+	
+	public int getPlayerX() {
+		return playerX;
+	}
+	
+	public int getPlayerY() {
+		return playerY;
+	}
 
 	public int getWidth() {
 		return width;

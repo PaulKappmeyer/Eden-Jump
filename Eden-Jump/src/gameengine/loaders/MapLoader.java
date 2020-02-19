@@ -3,6 +3,7 @@ package gameengine.loaders;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import gamelogic.Leveldata;
 import gamelogic.tiledMap.Map;
 import gamelogic.tiledMap.SolidTile;
 import gamelogic.tiledMap.Spikes;
@@ -10,7 +11,7 @@ import gamelogic.tiledMap.Tile;
 
 public class MapLoader {
 
-	public static Map loadMap(String filePath) throws Exception {
+	public static Leveldata loadMap(String filePath) throws Exception {
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
 		
 		int width = Integer.parseInt(bufferedReader.readLine().split("=")[1]);
@@ -30,11 +31,16 @@ public class MapLoader {
 				else tiles[x][y] = new Tile(x*tileSize, y*tileSize, tileSize);
 			}
 		}
+		String[] playerPos = bufferedReader.readLine().split("=")[1].split(",");
+		int playerX = Integer.parseInt(playerPos[0]);
+		int playerY = Integer.parseInt(playerPos[1]);
 		bufferedReader.close();
 		
 		Map map = new Map(width, height, tileSize, tiles);
 		
-		return map;
+		Leveldata leveldata = new Leveldata(map, playerX, playerY);
+		
+		return leveldata;
 	}
 	
 }

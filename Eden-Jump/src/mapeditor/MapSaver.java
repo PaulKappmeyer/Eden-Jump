@@ -20,6 +20,8 @@ class MapSaver {
 			printWriter.println();
 		}
 
+		printWriter.println("playerPos=" + map.getPlayerX() + "," + map.getPlayerY());
+		
 		printWriter.flush();
 		printWriter.close();
 
