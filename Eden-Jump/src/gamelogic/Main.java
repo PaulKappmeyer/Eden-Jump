@@ -18,7 +18,8 @@ public class Main extends GameBase{
 
 	public static final int SCREEN_WIDTH = 1280;
 	public static final int SCREEN_HEIGHT = 860;
-
+	public static final boolean DEBUGGING = false;
+	
 	public static Player player;
 	public static Camera camera;
 	public static Map map;
@@ -27,8 +28,6 @@ public class Main extends GameBase{
 	
 	private boolean isPlayerAlive = true;
 	private ScreenTransition screenTransition = new ScreenTransition();
-	
-	private boolean DEBUGGING = false;
 	
 	public static void main(String[] args) {
 		Main main = new Main();

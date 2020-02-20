@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import gameengine.PhysicsObject;
 import gameengine.graphics.MyGraphics;
 import gameengine.hitbox.RectHitbox;
+import gamelogic.Main;
+import gamelogic.tiledMap.Tile;
 
 public class Player extends PhysicsObject{
 	public float walkSpeed = 500;
@@ -42,6 +44,16 @@ public class Player extends PhysicsObject{
 	public void draw(Graphics g) {
 		g.setColor(Color.YELLOW);
 		MyGraphics.fillRectWithOutline(g, (int)getX(), (int)getY(), width, height);
+		
+		if(Main.DEBUGGING) {
+			for (int i = 0; i < closestMatrix.length; i++) {
+				Tile t = closestMatrix[i];
+				if(t != null) {
+					g.setColor(Color.RED);
+					g.drawRect((int)t.getX(), (int)t.getY(), t.getSize(), t.getSize());
+				}
+			}
+		}
 		
 		hitbox.draw(g);
 	}
