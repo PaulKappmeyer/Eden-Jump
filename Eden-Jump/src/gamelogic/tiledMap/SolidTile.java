@@ -4,16 +4,15 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import gameengine.hitbox.RectHitbox;
-import gamelogic.GameResources;
 
 public class SolidTile extends Tile{
 	
 	private BufferedImage image;
 	
-	public SolidTile(float x, float y, int size) {
+	public SolidTile(float x, float y, int size, BufferedImage image) {
 		super(x, y, size);
 		this.hitbox = new RectHitbox(x , y, 0, 10, size, size);
-		this.image = GameResources.solid;
+		this.image = image;
 	}
 	
 	@Override

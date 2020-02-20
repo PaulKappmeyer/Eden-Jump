@@ -49,13 +49,15 @@ class MapEditor extends GameBase{
 		oldMousePosition = new Vector2D();
 		oldCameraPosition = new Vector2D();
 
-		PaletteItem[] paletteItems = new PaletteItem[6];
+		PaletteItem[] paletteItems = new PaletteItem[8];
 		paletteItems[0] = new PaletteItem("Air", 0, null);
 		paletteItems[1] = new PaletteItem("Solid", 1, GameResources.solid);
 		paletteItems[2] = new PaletteItem("Spikes_downwards", 2, GameResources.spikes_downwards);
 		paletteItems[3] = new PaletteItem("Spikes_upwards", 3, GameResources.spikes_upwards);
 		paletteItems[4] = new PaletteItem("Spikes_leftwards", 4, GameResources.spikes_leftwards);
 		paletteItems[5] = new PaletteItem("Spikes_rightwards", 5, GameResources.spikes_rightwards);
+		paletteItems[6] = new PaletteItem("Spikes_rightwards", 6, GameResources.dirt);
+		paletteItems[7] = new PaletteItem("Spikes_rightwards", 7, GameResources.gras);
 		
 		paletteTiles = new Palette(screenSplit + 15, 10, paletteItems);
 		paletteTiles.setSelectedIndex(0);

@@ -3,6 +3,7 @@ package gameengine.loaders;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import gamelogic.GameResources;
 import gamelogic.Leveldata;
 import gamelogic.tiledMap.Map;
 import gamelogic.tiledMap.SolidTile;
@@ -23,11 +24,13 @@ public class MapLoader {
 			String[] values = bufferedReader.readLine().split(",");
 			for (int x = 0; x < width; x++) {
 				if(values[x].equals("0")) tiles[x][y] = new Tile(x*tileSize, y*tileSize, tileSize);
-				else if(values[x].equals("1")) tiles[x][y] = new SolidTile(x*tileSize, y*tileSize, tileSize);
+				else if(values[x].equals("1")) tiles[x][y] = new SolidTile(x*tileSize, y*tileSize, tileSize, GameResources.solid);
 				else if(values[x].equals("2")) tiles[x][y] = new Spikes(x*tileSize, y*tileSize, tileSize, Spikes.HORIZONTAL_DOWNWARDS);
 				else if(values[x].equals("3")) tiles[x][y] = new Spikes(x*tileSize, y*tileSize, tileSize, Spikes.HORIZONTAL_UPWARDS);
 				else if(values[x].equals("4")) tiles[x][y] = new Spikes(x*tileSize, y*tileSize, tileSize, Spikes.VERTICAL_LEFTWARDS);
 				else if(values[x].equals("5")) tiles[x][y] = new Spikes(x*tileSize, y*tileSize, tileSize, Spikes.VERTICAL_RIGHTWARDS);
+				else if(values[x].equals("6")) tiles[x][y] = new SolidTile(x*tileSize, y*tileSize, tileSize, GameResources.dirt);
+				else if(values[x].equals("7")) tiles[x][y] = new SolidTile(x*tileSize, y*tileSize, tileSize, GameResources.gras);
 				else tiles[x][y] = new Tile(x*tileSize, y*tileSize, tileSize);
 			}
 		}
