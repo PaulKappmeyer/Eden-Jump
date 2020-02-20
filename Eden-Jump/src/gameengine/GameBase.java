@@ -15,7 +15,7 @@ import gameengine.input.MouseInputManager;
  *
  */
 public abstract class GameBase {
-	private MyWindow window;
+	protected MyWindow window;
 
 	//-----------------------------------------------ABSTRACT METHODS FOR SUB-CLASS
 	public abstract void init();

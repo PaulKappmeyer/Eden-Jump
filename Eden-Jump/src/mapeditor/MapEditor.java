@@ -39,6 +39,7 @@ class MapEditor extends GameBase{
 	private int selectedPalette = 0;
 
 	private JFileChooser jFileChooser;
+	private boolean changed = false;
 
 	public static void main(String[] args) {
 		MapEditor mapeditor = new MapEditor();
@@ -84,6 +85,8 @@ class MapEditor extends GameBase{
 			}
 		}
 		EditorTiledMap map = new EditorTiledMap(width, height, tileSize, tiles, 0, 0);
+
+		window.setTitle("New Map");
 		return map;
 	}
 
@@ -109,6 +112,7 @@ class MapEditor extends GameBase{
 
 		EditorTiledMap map = new EditorTiledMap(width, height, tileSize, tiles, playerX, playerY);
 
+		window.setTitle(file.getName());
 		return map;
 	}
 
@@ -156,7 +160,11 @@ class MapEditor extends GameBase{
 
 			if(returnValue == JFileChooser.APPROVE_OPTION) {
 				try {
-					MapSaver.wirteMap(jFileChooser.getSelectedFile(), map);
+					File file = jFileChooser.getSelectedFile();
+					MapSaver.wirteMap(file, map);
+
+					changed = false;
+					window.setTitle(file.getName());
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -164,7 +172,7 @@ class MapEditor extends GameBase{
 			KeyboardInputManager.setKey(KeyEvent.VK_CONTROL, false);
 			KeyboardInputManager.setKey(KeyEvent.VK_S, false);
 		}
-		
+
 		//Updating the palette
 		paletteTiles.update(tslf);
 		paletteObjects.update(tslf);
@@ -188,6 +196,11 @@ class MapEditor extends GameBase{
 					if(MouseInputManager.isButtonDown(MouseEvent.BUTTON1)) {
 						mouseOver.setValue(paletteTiles.getSelectedPaletteItem().getValue());
 						mouseOver.setImage(paletteTiles.getSelectedPaletteItem().getImage());
+
+						if(!changed) {
+							window.setTitle(window.getTitle() + "*");
+							changed = true;
+						}
 					}
 				}
 			}
@@ -197,6 +210,11 @@ class MapEditor extends GameBase{
 				if(camera.isVisibleOnCamera(mouseOver.getX(), mouseOver.getY(), mouseOver.getSize(), mouseOver.getSize())) { 
 					if(MouseInputManager.isButtonDown(MouseEvent.BUTTON1) && paletteObjects.getSelectedPaletteItem().getName().equals("Player")) {
 						map.setPlayerPositon(map.getMouseTileX(), map.getMouseTileY());
+
+						if(!changed) {
+							window.setTitle(window.getTitle() + "*");
+							changed = true;
+						}
 					}
 				}
 			}
