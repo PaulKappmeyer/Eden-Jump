@@ -48,6 +48,11 @@ public class RectHitbox extends Hitbox{
 		g.drawRect((int)position.x, (int)position.y, width, height);
 	}
 
+	public boolean isIntersecting(RectHitbox hitbox) {
+		if(position.x < hitbox.getX() + hitbox.getWidth() && position.x + width > hitbox.getX() && position.y < hitbox.getY() + hitbox.getHeight() && position.y + height > hitbox.getY()) return true;
+		return false;
+	}
+	
 	//-------------------------------------------------------------Getters
 	public float getOffsetX() {
 		return offsetX;

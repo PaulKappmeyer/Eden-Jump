@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import gameengine.PhysicsObject;
 import gameengine.graphics.MyGraphics;
+import gameengine.hitbox.RectHitbox;
 
 public class Enemy extends PhysicsObject{
 
@@ -13,6 +14,7 @@ public class Enemy extends PhysicsObject{
 	public Enemy(float x, float y) {
 		super(x, y, 100, 100);
 		movementVector.x = walkSpeed;
+		this.hitbox = new RectHitbox(this, 10, 10, width - 10, height - 10);
 	}
 	
 	@Override

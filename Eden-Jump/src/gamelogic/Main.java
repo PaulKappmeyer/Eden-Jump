@@ -9,6 +9,7 @@ import gameengine.PhysicsObject;
 import gameengine.graphics.Camera;
 import gameengine.input.KeyboardInputManager;
 import gameengine.loaders.MapLoader;
+import gamelogic.enemies.Enemy;
 import gamelogic.player.Player;
 import gamelogic.tiledMap.Map;
 import gamelogic.tiledMap.Spikes;
@@ -21,6 +22,7 @@ public class Main extends GameBase{
 	public static Player player;
 	public static Camera camera;
 	public static Map map;
+	private Enemy[] enemies;
 	private Leveldata leveldata;
 	
 	private boolean isPlayerAlive = true;
@@ -45,6 +47,10 @@ public class Main extends GameBase{
 		}
 		
 		map = leveldata.getMap();
+		
+		enemies = new Enemy[1];
+		enemies[0] = new Enemy(1 * map.getTileSize(), 14 * map.getTileSize());
+		
 		player = new Player(leveldata.getPlayerX() * map.getTileSize(), leveldata.getPlayerY() * map.getTileSize());
 		
 		camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -61,6 +67,7 @@ public class Main extends GameBase{
 	}
 
 	public void restartLevel() {
+		enemies[0] = new Enemy(1 * map.getTileSize(), 14 * map.getTileSize());
 		player = new Player(leveldata.getPlayerX() * map.getTileSize(), leveldata.getPlayerY() * map.getTileSize());
 		camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 		camera.setFocusedObject(player);
@@ -82,6 +89,11 @@ public class Main extends GameBase{
 			if(player.getCollisionMatrix()[PhysicsObject.LEF] instanceof Spikes) restart();
 			if(player.getCollisionMatrix()[PhysicsObject.RIG] instanceof Spikes) restart();
 			
+			for (int i = 0; i < enemies.length; i++) {
+				enemies[i].update(tslf);
+				if(player.getHitbox().isIntersecting(enemies[i].getHitbox())) restart();
+			}
+			
 			camera.update(tslf);
 		}
 		
@@ -99,6 +111,10 @@ public class Main extends GameBase{
 		g.translate((int)-camera.getX(), (int)-camera.getY());
 
 		map.draw(g);
+		
+		for (int i = 0; i < enemies.length; i++) {
+			enemies[i].draw(g);
+		}
 		
 		player.draw(g);
 		
