@@ -1,20 +1,22 @@
 package gamelogic.enemies;
 
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 import gameengine.PhysicsObject;
-import gameengine.graphics.MyGraphics;
 import gameengine.hitbox.RectHitbox;
+import gamelogic.GameResources;
 
 public class Enemy extends PhysicsObject{
 
 	private float walkSpeed = 80;
+	private BufferedImage image;
 	
 	public Enemy(float x, float y) {
-		super(x, y, 100, 100);
+		super(x, y, 120, 120);
 		movementVector.x = walkSpeed;
 		this.hitbox = new RectHitbox(this, 10, 10, width - 10, height - 10);
+		this.image = GameResources.enemy;
 	}
 	
 	@Override
@@ -30,8 +32,7 @@ public class Enemy extends PhysicsObject{
 	
 	@Override
 	public void draw(Graphics g) {
-		g.setColor(Color.RED);
-		MyGraphics.fillRectWithOutline(g, (int)position.x, (int)position.y, width, height);
+		g.drawImage(image, (int)position.x, (int)position.y, width, height, null);
 		
 		hitbox.draw(g);
 	}
