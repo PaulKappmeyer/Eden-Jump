@@ -102,7 +102,7 @@ public class Main extends GameBase{
 		
 		player.draw(g);
 		
-		//camera.draw(g); //used for debugging
+		if(Camera.SHOW_CAMERA) camera.draw(g); //used for debugging
 		
 		g.translate((int)+camera.getX(), (int)+camera.getY());
 		

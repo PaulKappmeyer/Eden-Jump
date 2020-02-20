@@ -9,14 +9,16 @@ import gamelogic.player.Player;
 
 public class Camera {
 
+	public static final boolean SHOW_CAMERA = false;
+	
 	private Vector2D position;
 	private Player player;
 	
 	private int width;
 	private int height;
 	
-	private float velocityX = 1.3f; 
-	private float velocityY = 1.3f;
+	private float velocityX = 1.6f; 
+	private float velocityY = 1.6f;
 	
 	private float setValue = 0.5f;
 	
@@ -38,6 +40,11 @@ public class Camera {
 			
 			float goalX = player.getX() + player.getWidth()/2 - Main.SCREEN_WIDTH/2 + offsetX;
 			float goalY = player.getY() + player.getHeight()/2 - Main.SCREEN_HEIGHT/2 + offsetY;
+			
+			//Check Borders
+			if(goalX < 0) goalX = 0;
+			if(Main.map.getFullWidth() < goalX + width) goalX = Main.map.getFullWidth() - width; 
+			if(Main.map.getFullHeight() < goalY + height) goalY = Main.map.getFullHeight() - height;
 			
 			//Calculating the differences between the goal position and the current position of the camera
 			float diffX = goalX - position.x;
@@ -64,6 +71,11 @@ public class Camera {
 		this.player = object;
 		float goalX = player.getX() + player.getWidth()/2 - Main.SCREEN_WIDTH/2 + offsetX;
 		float goalY = player.getY() + player.getHeight()/2 - Main.SCREEN_HEIGHT/2 + offsetY;
+		//Check Borders
+		if(goalX < 0) goalX = 0;
+		if(Main.map.getFullWidth() < goalX + width) goalX = Main.map.getFullWidth() - width; 
+		if(Main.map.getFullHeight() < goalY + height) goalY = Main.map.getFullHeight() - height;
+		
 		position.x = goalX;
 		position.y = goalY;
 	}
