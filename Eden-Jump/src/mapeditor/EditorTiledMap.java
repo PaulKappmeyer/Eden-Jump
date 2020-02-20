@@ -17,19 +17,16 @@ class EditorTiledMap {
 	private int mouseTileX;
 	private int mouseTileY;
 
-	private int playerX = 0;
-	private int playerY = 0;
+	private int playerX;
+	private int playerY;
 
-	public EditorTiledMap(int width, int height, int tileSize) {
+	public EditorTiledMap(int width, int height, int tileSize, EditorTile[][]tiles, int playerX, int playerY) {
 		this.width = width;
 		this.height = height;
-		this.tiles = new EditorTile[width][height];
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				tiles[x][y] = new EditorTile(x * tileSize, y * tileSize, tileSize);
-			}
-		}
 		this.tileSize = tileSize;
+		this.tiles = tiles;
+		this.playerX = playerX;
+		this.playerY = playerY;
 	}
 
 	public void update(float tslf) {
@@ -84,7 +81,7 @@ class EditorTiledMap {
 			}
 		}
 	}
-
+	
 	//------------------------------------------Getters
 	public int getMouseTileX() {
 		return mouseTileX;

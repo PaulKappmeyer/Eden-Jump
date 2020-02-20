@@ -10,12 +10,12 @@ class EditorTile {
 	private int value;
 	private BufferedImage image;
 	
-	public EditorTile(int x, int y, int size) {
+	public EditorTile(int x, int y, int size, int value, BufferedImage image) {
 		this.x = x;
 		this.y = y;
 		this.size = size;
-		this.value = 0;
-		this.image = null;
+		this.value = value;
+		this.image = image;
 	}
 	
 	public void drawOutline(Graphics g) {

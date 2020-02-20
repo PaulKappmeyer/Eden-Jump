@@ -4,7 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+
+import javax.swing.JFileChooser;
 
 import gameengine.GameBase;
 import gameengine.graphics.Camera;
@@ -26,15 +31,15 @@ class MapEditor extends GameBase{
 
 	private EditorTiledMap map;
 
-	private boolean saved = false;
-
 	private int screenSplit = 1000;
 
 	public Palette paletteTiles; // index = 0;
 	public Palette paletteObjects; // index = 1;
 
 	private int selectedPalette = 0;
-	
+
+	private JFileChooser jFileChooser;
+
 	public static void main(String[] args) {
 		MapEditor mapeditor = new MapEditor();
 		mapeditor.start("MapEditor Eden Jump", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -43,8 +48,7 @@ class MapEditor extends GameBase{
 	@Override
 	public void init() {
 		GameResources.load();
-		
-		map = new EditorTiledMap(100, 20, 50);
+
 		camera = new Camera(screenSplit, SCREEN_HEIGHT);
 		oldMousePosition = new Vector2D();
 		oldCameraPosition = new Vector2D();
@@ -58,21 +62,75 @@ class MapEditor extends GameBase{
 		paletteItems[5] = new PaletteItem("Spikes_rightwards", 5, GameResources.spikes_rightwards);
 		paletteItems[6] = new PaletteItem("Spikes_rightwards", 6, GameResources.dirt);
 		paletteItems[7] = new PaletteItem("Spikes_rightwards", 7, GameResources.gras);
-		
 		paletteTiles = new Palette(screenSplit + 15, 10, paletteItems);
 		paletteTiles.setSelectedIndex(0);
 
 		paletteItems = new PaletteItem[2];
 		paletteItems[0] = new PaletteItem("Player", 0, null);
 		paletteItems[1] = new PaletteItem("Enemy", 0, null);
-
 		paletteObjects = new Palette(screenSplit + 15, 400, paletteItems);
+
+		map = createNewMap(100, 20, 50);
+
+		jFileChooser = new JFileChooser();
+		jFileChooser.setCurrentDirectory(new File(".\\maps\\map.txt"));
+	}
+
+	public EditorTiledMap createNewMap(int width, int height, int tileSize) {
+		EditorTile[][] tiles = new EditorTile[width][height];
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				tiles[x][y] = new EditorTile(x * tileSize, y * tileSize, tileSize, 0, null);
+			}
+		}
+		EditorTiledMap map = new EditorTiledMap(width, height, tileSize, tiles, 0, 0);
+		return map;
+	}
+
+	public EditorTiledMap loadMap(File file) throws Exception{
+		BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+
+		int width = Integer.parseInt(bufferedReader.readLine().split("=")[1]);
+		int height = Integer.parseInt(bufferedReader.readLine().split("=")[1]);
+		int tileSize = Integer.parseInt(bufferedReader.readLine().split("=")[1]);
+		EditorTile[][] tiles = new EditorTile[width][height];
+
+		for (int y = 0; y < height; y++) {
+			String[] values = bufferedReader.readLine().split(",");
+			for (int x = 0; x < width; x++) {
+				int value = Integer.parseInt(values[x]);
+				tiles[x][y] = new EditorTile(x * tileSize, y * tileSize, tileSize, value, paletteTiles.getPaletteItems()[value].getImage());
+			}
+		}
+		String[] playerPos = bufferedReader.readLine().split("=")[1].split(",");
+		int playerX = Integer.parseInt(playerPos[0]);
+		int playerY = Integer.parseInt(playerPos[1]);
+		bufferedReader.close();
+
+		EditorTiledMap map = new EditorTiledMap(width, height, tileSize, tiles, playerX, playerY);
+
+		return map;
 	}
 
 	@Override
 	public void update(float tslf) {
 		float mouseX = MouseInputManager.getMouseX();
 		float mouseY = MouseInputManager.getMouseY();
+
+		//Loading a map
+		if(KeyboardInputManager.isKeyDown(KeyEvent.VK_CONTROL) && KeyboardInputManager.isKeyDown(KeyEvent.VK_L)) {
+			int returnValue = jFileChooser.showOpenDialog(null);
+
+			if(returnValue == JFileChooser.APPROVE_OPTION) {
+				try {
+					map = loadMap(jFileChooser.getSelectedFile());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			KeyboardInputManager.setKey(KeyEvent.VK_CONTROL, false);
+			KeyboardInputManager.setKey(KeyEvent.VK_L, false);
+		} 
 
 		//Scrolling on the map
 		if(MouseInputManager.isButtonDown(MouseEvent.BUTTON3)) {
@@ -94,18 +152,19 @@ class MapEditor extends GameBase{
 
 		//Saving the map
 		if(KeyboardInputManager.isKeyDown(KeyEvent.VK_CONTROL) && KeyboardInputManager.isKeyDown(KeyEvent.VK_S)) {
-			if(!saved) {
+			int returnValue = jFileChooser.showSaveDialog(null);
+
+			if(returnValue == JFileChooser.APPROVE_OPTION) {
 				try {
-					MapSaver.wirteMap(map);
-					saved = true;
+					MapSaver.wirteMap(jFileChooser.getSelectedFile(), map);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
 			}
-		}else {
-			saved = false;
+			KeyboardInputManager.setKey(KeyEvent.VK_CONTROL, false);
+			KeyboardInputManager.setKey(KeyEvent.VK_S, false);
 		}
-
+		
 		//Updating the palette
 		paletteTiles.update(tslf);
 		paletteObjects.update(tslf);
@@ -120,7 +179,7 @@ class MapEditor extends GameBase{
 				paletteTiles.setSelectedIndex(-1);
 			}
 		}
-		
+
 		//Set value when tile is selected
 		if(selectedPalette == 0) {
 			EditorTile mouseOver = map.getMouseOver();
@@ -151,13 +210,13 @@ class MapEditor extends GameBase{
 		g.translate(-(int)camera.getX(), -(int)camera.getY());
 
 		map.draw(g);
-		
+
 		g.translate(+(int)camera.getX(), +(int)camera.getY());
 
 		//Fill background
 		g.setColor(Color.WHITE);
 		g.fillRect(screenSplit, 0, SCREEN_WIDTH-screenSplit, SCREEN_HEIGHT);
-		
+
 		//Draw Screen-split line
 		g.setColor(Color.BLACK);
 		g.drawLine(screenSplit, 0, screenSplit, SCREEN_HEIGHT);

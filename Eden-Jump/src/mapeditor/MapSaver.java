@@ -1,13 +1,14 @@
 package mapeditor;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 class MapSaver {
 
-	public static void wirteMap(EditorTiledMap map) throws FileNotFoundException {
+	public static void wirteMap(File file, EditorTiledMap map) throws FileNotFoundException {
 
-		PrintWriter printWriter = new PrintWriter(".\\maps\\map.txt");
+		PrintWriter printWriter = new PrintWriter(file);
 
 		printWriter.println("width=" + map.getWidth());
 		printWriter.println("height=" + map.getHeight());

@@ -76,6 +76,10 @@ class Palette {
 	}
 
 	//--------------------------------------Getters
+	public PaletteItem[] getPaletteItems() {
+		return paletteItems;
+	}
+	
 	public PaletteItem getSelectedPaletteItem() {
 		return paletteItems[selectedIndex];
 	}

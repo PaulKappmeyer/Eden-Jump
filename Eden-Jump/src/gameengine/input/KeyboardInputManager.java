@@ -13,16 +13,22 @@ import java.awt.event.KeyListener;
  */
 
 public final class KeyboardInputManager implements KeyListener {
-	
+
 	private static boolean[] keys = new boolean[1024];
-	
+
+	public static void setKey(int keyCode, boolean value) {
+		if(keyCode >= 0 && keyCode < keys.length && keys[keyCode]) {
+			keys[keyCode] = value;
+		}
+	}
+
 	public static boolean isKeyDown(int keyCode){
 		if(keyCode >= 0 && keyCode < keys.length && keys[keyCode]) {
-				return true;
+			return true;
 		}
 		else return false;
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent keyEvent) {
 		int keyCode = keyEvent.getKeyCode();
