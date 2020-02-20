@@ -5,7 +5,6 @@ import java.awt.Graphics;
 
 import gameengine.PhysicsObject;
 import gameengine.graphics.MyGraphics;
-import gameengine.hitbox.CollisionMatrix;
 import gameengine.hitbox.RectHitbox;
 
 public class Player extends PhysicsObject{
@@ -36,7 +35,7 @@ public class Player extends PhysicsObject{
 		}
 		
 		isJumping = true;
-		if(collisionMatrix[CollisionMatrix.BOT] != null) isJumping = false;
+		if(collisionMatrix[BOT] != null) isJumping = false;
 	}
 
 	@Override

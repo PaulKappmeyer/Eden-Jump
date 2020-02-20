@@ -5,8 +5,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 import gameengine.GameBase;
+import gameengine.PhysicsObject;
 import gameengine.graphics.Camera;
-import gameengine.hitbox.CollisionMatrix;
 import gameengine.input.KeyboardInputManager;
 import gameengine.loaders.MapLoader;
 import gamelogic.player.Player;
@@ -77,10 +77,10 @@ public class Main extends GameBase{
 			
 			//Player death
 			if(map.getFullHeight() + 100 < player.getY()) restart();
-			if(player.getCollisionMatrix()[CollisionMatrix.BOT] instanceof Spikes) restart();
-			if(player.getCollisionMatrix()[CollisionMatrix.TOP] instanceof Spikes) restart();
-			if(player.getCollisionMatrix()[CollisionMatrix.LEF] instanceof Spikes) restart();
-			if(player.getCollisionMatrix()[CollisionMatrix.RIG] instanceof Spikes) restart();
+			if(player.getCollisionMatrix()[PhysicsObject.BOT] instanceof Spikes) restart();
+			if(player.getCollisionMatrix()[PhysicsObject.TOP] instanceof Spikes) restart();
+			if(player.getCollisionMatrix()[PhysicsObject.LEF] instanceof Spikes) restart();
+			if(player.getCollisionMatrix()[PhysicsObject.RIG] instanceof Spikes) restart();
 			
 			camera.update(tslf);
 		}

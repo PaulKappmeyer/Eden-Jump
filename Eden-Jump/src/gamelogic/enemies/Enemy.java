@@ -1,11 +1,10 @@
-package gamelogic;
+package gamelogic.enemies;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import gameengine.PhysicsObject;
 import gameengine.graphics.MyGraphics;
-import gameengine.hitbox.CollisionMatrix;
 
 public class Enemy extends PhysicsObject{
 
@@ -20,9 +19,9 @@ public class Enemy extends PhysicsObject{
 	public void update(float tslf) {
 		super.update(tslf);
 		
-		if(collisionMatrix[CollisionMatrix.LEF] != null) {
+		if(collisionMatrix[LEF] != null) {
 			movementVector.x = walkSpeed;
-		} else if(collisionMatrix[CollisionMatrix.RIG] != null) {
+		} else if(collisionMatrix[RIG] != null) {
 			movementVector.x = -walkSpeed;
 		}
 	}
