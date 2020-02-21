@@ -14,6 +14,8 @@ public final class GameResources {
 	public static BufferedImage gras;
 	public static BufferedImage dirt;
 	public static BufferedImage flag;
+	public static BufferedImage flower1;
+	public static BufferedImage flower2;
 	
 	public static BufferedImage enemy;
 	
@@ -27,6 +29,8 @@ public final class GameResources {
 			gras = ImageLoader.loadImage(".\\gfx\\gras.png");
 			dirt = ImageLoader.loadImage(".\\gfx\\dirt.png");
 			flag = ImageLoader.loadImage(".\\gfx\\flag.png");
+			flower1 = ImageLoader.loadImage(".\\gfx\\flower1.png");
+			flower2 = ImageLoader.loadImage(".\\gfx\\flower2.png");
 			
 			enemy = ImageLoader.loadImage(".\\gfx\\enemy.png");
 		} catch (Exception e) {

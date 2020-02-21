@@ -50,11 +50,11 @@ class MapEditor extends GameBase{
 	public void init() {
 		GameResources.load();
 
-		camera = new Camera(screenSplit, SCREEN_HEIGHT, -1, -1, -1);
+		camera = new Camera(screenSplit, SCREEN_HEIGHT, -1, -1, -1); //-1 -> no borders
 		oldMousePosition = new Vector2D();
 		oldCameraPosition = new Vector2D();
 
-		PaletteItem[] paletteItems = new PaletteItem[10];
+		PaletteItem[] paletteItems = new PaletteItem[12];
 		paletteItems[0] = new PaletteItem("Air", 0, null);
 		paletteItems[1] = new PaletteItem("Solid", 1, GameResources.solid);
 		paletteItems[2] = new PaletteItem("Spikes_downwards", 2, GameResources.spikes_downwards);
@@ -65,6 +65,8 @@ class MapEditor extends GameBase{
 		paletteItems[7] = new PaletteItem("Spikes_rightwards", 7, GameResources.gras);
 		paletteItems[8] = new PaletteItem("Enemy", 8, GameResources.enemy);
 		paletteItems[9] = new PaletteItem("Flag", 9, GameResources.flag);
+		paletteItems[10] = new PaletteItem("Flag", 10, GameResources.flower1);
+		paletteItems[11] = new PaletteItem("Flag", 11, GameResources.flower2);
 		paletteTiles = new Palette(screenSplit + 15, 10, paletteItems);
 		paletteTiles.setSelectedIndex(0);
 
@@ -72,7 +74,7 @@ class MapEditor extends GameBase{
 		paletteItems[0] = new PaletteItem("Player", 0, null); //TODO: Make Enemy part of palette
 		paletteObjects = new Palette(screenSplit + 15, 400, paletteItems);
 
-		map = createNewMap(20, 10, 50);
+		map = createNewMap(100, 20, 50);
 
 		jFileChooser = new JFileChooser();
 		jFileChooser.setCurrentDirectory(new File(".\\maps\\map.txt"));

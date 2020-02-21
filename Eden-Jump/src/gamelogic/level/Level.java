@@ -60,6 +60,8 @@ public class Level {
 				else if(values[x][y] == 7) tiles[x][y] = new SolidTile(xPosition, yPosition, tileSize, GameResources.gras, this);
 				else if(values[x][y] == 8) enemiesList.add(new Enemy(xPosition, yPosition, null)); //TODO: objects vs tiles
 				else if(values[x][y] == 9) tiles[x][y] = new Flag(xPosition, yPosition, tileSize, GameResources.flag, this);
+				else if(values[x][y] == 10) tiles[x][y] = new Tile(xPosition, yPosition, tileSize, GameResources.flower1, false, this);
+				else if(values[x][y] == 11) tiles[x][y] = new Tile(xPosition, yPosition, tileSize, GameResources.flower2, false, this);
 			}
 		}
 		
