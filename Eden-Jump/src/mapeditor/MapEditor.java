@@ -77,7 +77,7 @@ class MapEditor extends GameBase{
 		map = createNewMap(100, 20, 50);
 
 		jFileChooser = new JFileChooser();
-		jFileChooser.setCurrentDirectory(new File(".\\maps\\map.txt"));
+		jFileChooser.setCurrentDirectory(new File(".\\maps\\"));
 	}
 
 	public EditorTiledMap createNewMap(int width, int height, int tileSize) {

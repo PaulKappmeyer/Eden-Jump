@@ -20,7 +20,9 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 
 	private ScreenTransition screenTransition = new ScreenTransition();
 
-	private Level level;
+	private Leveldata[] levels;
+	private Level currentLevel;
+	private int currentLevelIndex;
 
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -31,32 +33,45 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 	public void init() {
 		GameResources.load();
 
-		Leveldata leveldata = null;
+		currentLevelIndex = 0;
+
+		levels = new Leveldata[2];
 		try {
-			leveldata = LeveldataLoader.loadMap(".\\maps\\map1.txt");
+			levels[0] = LeveldataLoader.loadMap(".\\maps\\map0.txt");
+			levels[1] = LeveldataLoader.loadMap(".\\maps\\map1.txt");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		level = new Level(leveldata);
+		currentLevel = new Level(levels[currentLevelIndex]);
 
-		level.addPlayerDieListener(this);
-		level.addPlayerWinListener(this);
+		currentLevel.addPlayerDieListener(this);
+		currentLevel.addPlayerWinListener(this);
 	}
 
 	@Override
 	public void onPlayerDeath() {
 		if(DEBUGGING) {
-			level.restartLevel();
+			currentLevel.restartLevel();
 			return;
 		}
 		screenTransition.setText("LOSE");
 		screenTransition.activate();
 	}
-	
+
 	@Override
 	public void onPlayerWin() {
 		screenTransition.setText("WIN");
 		screenTransition.activate();
+	}
+
+	private void changeLevel() {
+		if(currentLevelIndex < levels.length-1) {
+			currentLevelIndex++;
+			currentLevel = new Level(levels[currentLevelIndex]);
+
+			currentLevel.addPlayerDieListener(this);
+			currentLevel.addPlayerWinListener(this);
+		}
 	}
 
 	@Override
@@ -64,14 +79,22 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 		if(KeyboardInputManager.isKeyDown(KeyEvent.VK_N)) init();
 		if(KeyboardInputManager.isKeyDown(KeyEvent.VK_ESCAPE)) System.exit(0);
 
-		level.update(tslf);
+		currentLevel.update(tslf);
 
 		screenTransition.update(tslf);
-		
-		if(!level.isActive() && level.isPlayerDead()) {
+
+		if(!currentLevel.isActive() && currentLevel.isPlayerDead()) {
 			if(screenTransition.isActive() && !screenTransition.isActivating() && !screenTransition.isDeactivating()) {
-				level.restartLevel();
+				currentLevel.restartLevel();
 				screenTransition.deactivate();
+			}
+		}
+		if(!currentLevel.isActive() && currentLevel.isPlayerWin()) {
+			if(currentLevelIndex < levels.length-1) {
+				if(screenTransition.isActive() && !screenTransition.isActivating() && !screenTransition.isDeactivating()) {
+					changeLevel();
+					screenTransition.deactivate();
+				}
 			}
 		}
 	}
@@ -80,7 +103,7 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 	public void draw(Graphics g) {
 		drawBackground(g);
 
-		level.draw(g);
+		currentLevel.draw(g);
 
 		screenTransition.draw(g);
 	}
