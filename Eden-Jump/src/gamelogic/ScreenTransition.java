@@ -1,6 +1,8 @@
 package gamelogic;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 
 import gameengine.maths.Vector2D;
@@ -13,11 +15,16 @@ public class ScreenTransition {
 	private Vector2D position;
 	private float width;
 	private float height;
-	private float velocity = Main.SCREEN_WIDTH * 4;
-
+	private float velocity = Main.SCREEN_WIDTH * 1.5f;
+	
+	private String text = null;
+	private int textWidth = Main.SCREEN_WIDTH;
+	private int textHeight = Main.SCREEN_HEIGHT;
+	private Font font = new Font("Arial", Font.BOLD, 400);
+	
 	public ScreenTransition() {
-		this.position = new Vector2D();
-		this.width = 0;
+		this.position = new Vector2D(-Main.SCREEN_WIDTH, 0);
+		this.width = Main.SCREEN_WIDTH;
 		this.height = Main.SCREEN_HEIGHT;
 	}
 
@@ -25,9 +32,9 @@ public class ScreenTransition {
 		if(isActive) {
 			//Activating
 			if(isActivating) {
-				width += velocity * tslf;
-				if(Main.SCREEN_WIDTH < width) {
-					width = Main.SCREEN_WIDTH;
+				position.x += velocity * tslf;
+				if(0 < position.x) {
+					position.x = 0;
 					isActivating = false;
 				}
 			}
@@ -35,8 +42,7 @@ public class ScreenTransition {
 			else if(isDeactivating) {
 				position.x += velocity * tslf;
 				if(Main.SCREEN_WIDTH < position.x) {
-					width = 0;
-					position.x = 0;
+					position.x = -Main.SCREEN_WIDTH;
 					
 					isDeactivating = false;
 					isActive = false;
@@ -49,6 +55,20 @@ public class ScreenTransition {
 		if(isActive) {
 			g.setColor(Color.BLACK);
 			g.fillRect((int)position.x, (int)position.y, (int)width, (int)height);
+			
+			if(text != null) {
+				g.setColor(Color.WHITE);
+				// Get the FontMetrics
+				FontMetrics metrics = g.getFontMetrics(font);
+				// Determine the X coordinate for the text
+				int x = (int)(position.x + (textWidth - metrics.stringWidth(text)) / 2);
+				// Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)
+				int y = (int)(position.y + ((textHeight - metrics.getHeight()) / 2) + metrics.getAscent());
+				// Set the font
+				g.setFont(font);
+				// Draw the String
+				g.drawString(text, x, y);
+			}
 		}
 	}
 
@@ -61,6 +81,10 @@ public class ScreenTransition {
 		isDeactivating = true;
 	}
 
+	public void setText(String text) {
+		this.text = text;
+	}
+	
 	//---------------------------------------Getters
 	public boolean isActive() {
 		return isActive;

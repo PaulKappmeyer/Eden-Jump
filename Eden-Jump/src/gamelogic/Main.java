@@ -49,12 +49,14 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 			level.restartLevel();
 			return;
 		}
+		screenTransition.setText("LOSE");
 		screenTransition.activate();
 	}
 	
 	@Override
 	public void onPlayerWin() {
-		level.restartLevel();
+		screenTransition.setText("WIN");
+		screenTransition.activate();
 	}
 
 	@Override
