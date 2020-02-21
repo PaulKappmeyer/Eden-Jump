@@ -1,7 +1,4 @@
-package gamelogic.tiledMap;
-
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+package gamelogic.tiles;
 
 import gameengine.hitbox.RectHitbox;
 import gamelogic.GameResources;
@@ -13,13 +10,11 @@ public class Spikes extends Tile{
 	public static final int VERTICAL_LEFTWARDS = 2;
 	public static final int VERTICAL_RIGHTWARDS = 3;
 	
-	private BufferedImage image;
-	
 	private int offsetX = 25;
 	private int offsetY = 70;
 	
 	public Spikes(float x, float y, int size, int orientation) {
-		super(x, y, size);
+		super(x, y, size, null, true);
 		switch (orientation) {
 		case HORIZONTAL_UPWARDS:
 			hitbox = new RectHitbox(x , y, offsetX, offsetY, size - offsetX, size);
@@ -42,12 +37,4 @@ public class Spikes extends Tile{
 			break;
 		}
 	}
-	
-	@Override
-	public void draw(Graphics g) {
-		g.drawImage(image, (int)position.x, (int)position.y, size, size, null);
-		
-		hitbox.draw(g);
-	}
-	
 }

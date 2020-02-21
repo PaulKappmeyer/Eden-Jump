@@ -3,7 +3,7 @@ package gameengine;
 import gameengine.hitbox.RectHitbox;
 import gameengine.maths.Vector2D;
 import gamelogic.Main;
-import gamelogic.tiledMap.Tile;
+import gamelogic.tiles.Tile;
 
 public class PhysicsObject extends GameObject{
 	//Used for collision
@@ -82,6 +82,7 @@ public class PhysicsObject extends GameObject{
 		for (int i = 0; i < Main.map.getWidth(); i++) {
 			for (int j = 0; j < Main.map.getHeight(); j++) {
 				Tile tile = Main.map.getTiles()[i][j];
+				if(!tile.isSolid()) continue;
 				RectHitbox obstacle = tile.getHitbox();
 				if(obstacle == null) continue;
 				

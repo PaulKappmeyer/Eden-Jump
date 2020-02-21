@@ -12,7 +12,7 @@ import gameengine.loaders.MapLoader;
 import gamelogic.enemies.Enemy;
 import gamelogic.player.Player;
 import gamelogic.tiledMap.Map;
-import gamelogic.tiledMap.Spikes;
+import gamelogic.tiles.Spikes;
 
 public class Main extends GameBase{
 
@@ -26,8 +26,8 @@ public class Main extends GameBase{
 	private Enemy[] enemies;
 	private Leveldata leveldata;
 	
-	private boolean isPlayerAlive;
-	private ScreenTransition screenTransition = new ScreenTransition();
+	private static boolean isPlayerAlive;
+	private static ScreenTransition screenTransition = new ScreenTransition();
 	
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -50,6 +50,11 @@ public class Main extends GameBase{
 		restartLevel();
 	}
 	
+	public static void win() {
+		isPlayerAlive = false;
+		screenTransition.activate();
+	}
+	
 	public void restart() {
 		if(DEBUGGING) {
 			restartLevel();
@@ -63,7 +68,7 @@ public class Main extends GameBase{
 		Enemy[] enemiesLeveldata = leveldata.getEnemies();
 
 		for (int i = 0; i < enemiesLeveldata.length; i++) {
-			enemies[i] = new Enemy(enemiesLeveldata[i].getX(), enemiesLeveldata[i].getY());
+			enemies[i] = new Enemy(enemiesLeveldata[i].getX(), enemiesLeveldata[i].getY()); 
 		}
 		
 		player = new Player(leveldata.getPlayerX() * map.getTileSize(), leveldata.getPlayerY() * map.getTileSize());
@@ -91,6 +96,8 @@ public class Main extends GameBase{
 				enemies[i].update(tslf);
 				if(player.getHitbox().isIntersecting(enemies[i].getHitbox())) restart();
 			}
+			
+			map.update(tslf);
 			
 			camera.update(tslf);
 		}

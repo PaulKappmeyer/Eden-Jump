@@ -3,6 +3,7 @@ package gamelogic.tiledMap;
 import java.awt.Graphics;
 
 import gamelogic.Main;
+import gamelogic.tiles.Tile;
 
 public class Map {
 	
@@ -20,6 +21,16 @@ public class Map {
 		this.tileSize = tileSize;
 		this.fullWidth = width * tileSize;
 		this.fullHeight = height * tileSize;
+	}
+	
+	public void update(float tslf) {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				Tile tile = tiles[i][j];
+				if(tile == null) continue;
+				tile.update(tslf);
+			}
+		}
 	}
 	
 	public void draw(Graphics g) {

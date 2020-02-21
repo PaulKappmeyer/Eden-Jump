@@ -7,7 +7,7 @@ import gameengine.PhysicsObject;
 import gameengine.graphics.MyGraphics;
 import gameengine.hitbox.RectHitbox;
 import gamelogic.Main;
-import gamelogic.tiledMap.Tile;
+import gamelogic.tiles.Tile;
 
 public class Player extends PhysicsObject{
 	public float walkSpeed = 500;

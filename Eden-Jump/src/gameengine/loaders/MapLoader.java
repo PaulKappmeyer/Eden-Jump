@@ -8,9 +8,10 @@ import gamelogic.GameResources;
 import gamelogic.Leveldata;
 import gamelogic.enemies.Enemy;
 import gamelogic.tiledMap.Map;
-import gamelogic.tiledMap.SolidTile;
-import gamelogic.tiledMap.Spikes;
-import gamelogic.tiledMap.Tile;
+import gamelogic.tiles.Flag;
+import gamelogic.tiles.SolidTile;
+import gamelogic.tiles.Spikes;
+import gamelogic.tiles.Tile;
 
 public class MapLoader {
 
@@ -24,21 +25,24 @@ public class MapLoader {
 		ArrayList<Enemy> enemiesList = new ArrayList<>();
 		
 		for (int y = 0; y < height; y++) {
+			int yPosition = y*tileSize;
+			
 			String[] values = bufferedReader.readLine().split(",");
 			for (int x = 0; x < width; x++) {
-				if(values[x].equals("0")) tiles[x][y] = new Tile(x*tileSize, y*tileSize, tileSize);
-				else if(values[x].equals("1")) tiles[x][y] = new SolidTile(x*tileSize, y*tileSize, tileSize, GameResources.solid);
-				else if(values[x].equals("2")) tiles[x][y] = new Spikes(x*tileSize, y*tileSize, tileSize, Spikes.HORIZONTAL_DOWNWARDS);
-				else if(values[x].equals("3")) tiles[x][y] = new Spikes(x*tileSize, y*tileSize, tileSize, Spikes.HORIZONTAL_UPWARDS);
-				else if(values[x].equals("4")) tiles[x][y] = new Spikes(x*tileSize, y*tileSize, tileSize, Spikes.VERTICAL_LEFTWARDS);
-				else if(values[x].equals("5")) tiles[x][y] = new Spikes(x*tileSize, y*tileSize, tileSize, Spikes.VERTICAL_RIGHTWARDS);
-				else if(values[x].equals("6")) tiles[x][y] = new SolidTile(x*tileSize, y*tileSize, tileSize, GameResources.dirt);
-				else if(values[x].equals("7")) tiles[x][y] = new SolidTile(x*tileSize, y*tileSize, tileSize, GameResources.gras);
-				else if(values[x].equals("8")) {
-					tiles[x][y] = new Tile(x*tileSize, y*tileSize, tileSize); //TODO: objects vs tiles
-					enemiesList.add(new Enemy(x*tileSize, y*tileSize));
-				}
-				else tiles[x][y] = new Tile(x*tileSize, y*tileSize, tileSize);
+				int xPosition = x*tileSize;
+				
+				tiles[x][y] = new Tile(xPosition, yPosition, tileSize, null, false);
+				
+				if(values[x].equals("0")) tiles[x][y] = new Tile(xPosition, yPosition, tileSize, null, false); //Air
+				else if(values[x].equals("1")) tiles[x][y] = new SolidTile(xPosition, yPosition, tileSize, GameResources.solid);
+				else if(values[x].equals("2")) tiles[x][y] = new Spikes(xPosition, yPosition, tileSize, Spikes.HORIZONTAL_DOWNWARDS);
+				else if(values[x].equals("3")) tiles[x][y] = new Spikes(xPosition, yPosition, tileSize, Spikes.HORIZONTAL_UPWARDS);
+				else if(values[x].equals("4")) tiles[x][y] = new Spikes(xPosition, yPosition, tileSize, Spikes.VERTICAL_LEFTWARDS);
+				else if(values[x].equals("5")) tiles[x][y] = new Spikes(xPosition, yPosition, tileSize, Spikes.VERTICAL_RIGHTWARDS);
+				else if(values[x].equals("6")) tiles[x][y] = new SolidTile(xPosition, yPosition, tileSize, GameResources.dirt);
+				else if(values[x].equals("7")) tiles[x][y] = new SolidTile(xPosition, yPosition, tileSize, GameResources.gras);
+				else if(values[x].equals("8")) enemiesList.add(new Enemy(xPosition, yPosition)); //TODO: objects vs tiles
+				else if(values[x].equals("9")) tiles[x][y] = new Flag(xPosition, yPosition, tileSize, GameResources.flag);
 			}
 		}
 		String[] playerPos = bufferedReader.readLine().split("=")[1].split(",");

@@ -13,6 +13,7 @@ public final class GameResources {
 	public static BufferedImage spikes_rightwards;
 	public static BufferedImage gras;
 	public static BufferedImage dirt;
+	public static BufferedImage flag;
 	
 	public static BufferedImage enemy;
 	
@@ -25,6 +26,8 @@ public final class GameResources {
 			spikes_rightwards = ImageLoader.loadImage(".\\gfx\\spikes_rightwards.png");
 			gras = ImageLoader.loadImage(".\\gfx\\gras.png");
 			dirt = ImageLoader.loadImage(".\\gfx\\dirt.png");
+			flag = ImageLoader.loadImage(".\\gfx\\flag.png");
+			
 			enemy = ImageLoader.loadImage(".\\gfx\\enemy.png");
 		} catch (Exception e) {
 			e.printStackTrace();
