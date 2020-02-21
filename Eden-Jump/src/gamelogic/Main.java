@@ -33,7 +33,7 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 
 		Leveldata leveldata = null;
 		try {
-			leveldata = LeveldataLoader.loadMap(".\\maps\\map.txt");
+			leveldata = LeveldataLoader.loadMap(".\\maps\\map1.txt");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
