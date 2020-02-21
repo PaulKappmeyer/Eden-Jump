@@ -19,7 +19,7 @@ class EditorTiledMap {
 
 	private int playerX;
 	private int playerY;
-
+	
 	public EditorTiledMap(int width, int height, int tileSize, EditorTile[][]tiles, int playerX, int playerY) {
 		this.width = width;
 		this.height = height;
@@ -55,7 +55,7 @@ class EditorTiledMap {
 				if(tile.getImage() != null) g.drawImage(tile.getImage(), tile.getX(), tile.getY(), tileSize, tileSize, null);
 			}
 		}
-
+		
 		//Player position
 		g.setColor(new Color(0, 255, 255, 100));
 		g.fillRect(playerX*tileSize + 5, playerY*tileSize + 5, tileSize - 10, tileSize - 10);

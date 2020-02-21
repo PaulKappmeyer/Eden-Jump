@@ -2,9 +2,11 @@ package gameengine.loaders;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 import gamelogic.GameResources;
 import gamelogic.Leveldata;
+import gamelogic.enemies.Enemy;
 import gamelogic.tiledMap.Map;
 import gamelogic.tiledMap.SolidTile;
 import gamelogic.tiledMap.Spikes;
@@ -19,6 +21,7 @@ public class MapLoader {
 		int height = Integer.parseInt(bufferedReader.readLine().split("=")[1]);
 		int tileSize = Integer.parseInt(bufferedReader.readLine().split("=")[1]) * 2;
 		Tile[][] tiles = new Tile[width][height];
+		ArrayList<Enemy> enemiesList = new ArrayList<>();
 		
 		for (int y = 0; y < height; y++) {
 			String[] values = bufferedReader.readLine().split(",");
@@ -31,6 +34,10 @@ public class MapLoader {
 				else if(values[x].equals("5")) tiles[x][y] = new Spikes(x*tileSize, y*tileSize, tileSize, Spikes.VERTICAL_RIGHTWARDS);
 				else if(values[x].equals("6")) tiles[x][y] = new SolidTile(x*tileSize, y*tileSize, tileSize, GameResources.dirt);
 				else if(values[x].equals("7")) tiles[x][y] = new SolidTile(x*tileSize, y*tileSize, tileSize, GameResources.gras);
+				else if(values[x].equals("8")) {
+					tiles[x][y] = new Tile(x*tileSize, y*tileSize, tileSize); //TODO: objects vs tiles
+					enemiesList.add(new Enemy(x*tileSize, y*tileSize));
+				}
 				else tiles[x][y] = new Tile(x*tileSize, y*tileSize, tileSize);
 			}
 		}
@@ -41,7 +48,10 @@ public class MapLoader {
 		
 		Map map = new Map(width, height, tileSize, tiles);
 		
-		Leveldata leveldata = new Leveldata(map, playerX, playerY);
+		Enemy[] enemies = new Enemy[enemiesList.size()];
+		enemies = enemiesList.toArray(enemies);
+		
+		Leveldata leveldata = new Leveldata(map, playerX, playerY, enemies);
 		
 		return leveldata;
 	}

@@ -54,7 +54,7 @@ class MapEditor extends GameBase{
 		oldMousePosition = new Vector2D();
 		oldCameraPosition = new Vector2D();
 
-		PaletteItem[] paletteItems = new PaletteItem[8];
+		PaletteItem[] paletteItems = new PaletteItem[9];
 		paletteItems[0] = new PaletteItem("Air", 0, null);
 		paletteItems[1] = new PaletteItem("Solid", 1, GameResources.solid);
 		paletteItems[2] = new PaletteItem("Spikes_downwards", 2, GameResources.spikes_downwards);
@@ -63,12 +63,12 @@ class MapEditor extends GameBase{
 		paletteItems[5] = new PaletteItem("Spikes_rightwards", 5, GameResources.spikes_rightwards);
 		paletteItems[6] = new PaletteItem("Spikes_rightwards", 6, GameResources.dirt);
 		paletteItems[7] = new PaletteItem("Spikes_rightwards", 7, GameResources.gras);
+		paletteItems[8] = new PaletteItem("Enemy", 8, GameResources.enemy);
 		paletteTiles = new Palette(screenSplit + 15, 10, paletteItems);
 		paletteTiles.setSelectedIndex(0);
 
-		paletteItems = new PaletteItem[2];
-		paletteItems[0] = new PaletteItem("Player", 0, null);
-		paletteItems[1] = new PaletteItem("Enemy", 0, null);
+		paletteItems = new PaletteItem[1];
+		paletteItems[0] = new PaletteItem("Player", 0, null); //TODO: Make Enemy part of palette
 		paletteObjects = new Palette(screenSplit + 15, 400, paletteItems);
 
 		map = createNewMap(100, 20, 50);
@@ -208,19 +208,21 @@ class MapEditor extends GameBase{
 			EditorTile mouseOver = map.getMouseOver();
 			if(mouseOver != null) {
 				if(camera.isVisibleOnCamera(mouseOver.getX(), mouseOver.getY(), mouseOver.getSize(), mouseOver.getSize())) { 
-					if(MouseInputManager.isButtonDown(MouseEvent.BUTTON1) && paletteObjects.getSelectedPaletteItem().getName().equals("Player")) {
-						map.setPlayerPositon(map.getMouseTileX(), map.getMouseTileY());
+					if(MouseInputManager.isButtonDown(MouseEvent.BUTTON1)) {
+						if(paletteObjects.getSelectedPaletteItem().getName().equals("Player")) {
+							map.setPlayerPositon(map.getMouseTileX(), map.getMouseTileY());
 
-						if(!changed) {
-							window.setTitle(window.getTitle() + "*");
-							changed = true;
+							if(!changed) {
+								window.setTitle(window.getTitle() + "*");
+								changed = true;
+							}
 						}
 					}
 				}
 			}
 		}
 	}
-
+	
 	@Override
 	public void draw(Graphics g) {
 		drawBackground(g);

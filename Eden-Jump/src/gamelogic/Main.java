@@ -26,7 +26,7 @@ public class Main extends GameBase{
 	private Enemy[] enemies;
 	private Leveldata leveldata;
 	
-	private boolean isPlayerAlive = true;
+	private boolean isPlayerAlive;
 	private ScreenTransition screenTransition = new ScreenTransition();
 	
 	public static void main(String[] args) {
@@ -46,14 +46,8 @@ public class Main extends GameBase{
 		}
 		
 		map = leveldata.getMap();
-		
-		enemies = new Enemy[1];
-		enemies[0] = new Enemy(1 * map.getTileSize(), 14 * map.getTileSize());
-		
-		player = new Player(leveldata.getPlayerX() * map.getTileSize(), leveldata.getPlayerY() * map.getTileSize());
-		
-		camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
-		camera.setFocusedObject(player);
+		enemies = new Enemy[leveldata.getEnemies().length];
+		restartLevel();
 	}
 	
 	public void restart() {
@@ -66,7 +60,12 @@ public class Main extends GameBase{
 	}
 
 	public void restartLevel() {
-		enemies[0] = new Enemy(1 * map.getTileSize(), 14 * map.getTileSize());
+		Enemy[] enemiesLeveldata = leveldata.getEnemies();
+
+		for (int i = 0; i < enemiesLeveldata.length; i++) {
+			enemies[i] = new Enemy(enemiesLeveldata[i].getX(), enemiesLeveldata[i].getY());
+		}
+		
 		player = new Player(leveldata.getPlayerX() * map.getTileSize(), leveldata.getPlayerY() * map.getTileSize());
 		camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 		camera.setFocusedObject(player);
