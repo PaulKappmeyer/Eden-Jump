@@ -7,6 +7,7 @@ import gameengine.PhysicsObject;
 import gameengine.graphics.MyGraphics;
 import gameengine.hitbox.RectHitbox;
 import gamelogic.Main;
+import gamelogic.level.Level;
 import gamelogic.tiles.Tile;
 
 public class Player extends PhysicsObject{
@@ -15,8 +16,8 @@ public class Player extends PhysicsObject{
 
 	private boolean isJumping = false;
 
-	public Player(float x, float y) {
-		super(x, y, 100, 100);
+	public Player(float x, float y, Level level) {
+		super(x, y, 100, 100, level);
 		this.hitbox = new RectHitbox(this, 10, 10, width - 10, height - 10);
 	}
 

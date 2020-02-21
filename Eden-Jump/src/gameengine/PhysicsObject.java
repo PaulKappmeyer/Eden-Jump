@@ -2,7 +2,7 @@ package gameengine;
 
 import gameengine.hitbox.RectHitbox;
 import gameengine.maths.Vector2D;
-import gamelogic.Main;
+import gamelogic.level.Level;
 import gamelogic.tiles.Tile;
 
 public class PhysicsObject extends GameObject{
@@ -21,8 +21,11 @@ public class PhysicsObject extends GameObject{
 	protected Tile[] collisionMatrix;
 	protected Tile[] closestMatrix;
 
-	public PhysicsObject(float x, float y, int width, int height) {
+	private Level level;
+	
+	public PhysicsObject(float x, float y, int width, int height, Level level) {
 		super(x, y, width, height);
+		this.level = level;
 		this.movementVector = new Vector2D();
 		this.hitbox = new RectHitbox(this, 0, 0, width, height);
 		this.collisionMatrix = new Tile[4];
@@ -79,9 +82,9 @@ public class PhysicsObject extends GameObject{
 		float topSide = hitbox.getY();
 		float botSide = hitbox.getY() + hitbox.getHeight();
 		
-		for (int i = 0; i < Main.map.getWidth(); i++) {
-			for (int j = 0; j < Main.map.getHeight(); j++) {
-				Tile tile = Main.map.getTiles()[i][j];
+		for (int i = 0; i < level.getMap().getWidth(); i++) {
+			for (int j = 0; j < level.getMap().getHeight(); j++) {
+				Tile tile = level.getMap().getTiles()[i][j];
 				if(!tile.isSolid()) continue;
 				RectHitbox obstacle = tile.getHitbox();
 				if(obstacle == null) continue;

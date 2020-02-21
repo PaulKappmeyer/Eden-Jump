@@ -6,14 +6,15 @@ import java.awt.image.BufferedImage;
 import gameengine.PhysicsObject;
 import gameengine.hitbox.RectHitbox;
 import gamelogic.GameResources;
+import gamelogic.level.Level;
 
 public class Enemy extends PhysicsObject{
 
 	private float walkSpeed = 80;
 	private BufferedImage image;
 	
-	public Enemy(float x, float y) {
-		super(x, y, 120, 120);
+	public Enemy(float x, float y, Level level) {
+		super(x, y, 120, 120, level);
 		movementVector.x = walkSpeed;
 		this.hitbox = new RectHitbox(this, 10, 10, width - 10, height - 10);
 		this.image = GameResources.enemy;

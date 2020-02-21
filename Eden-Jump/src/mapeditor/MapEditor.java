@@ -50,7 +50,7 @@ class MapEditor extends GameBase{
 	public void init() {
 		GameResources.load();
 
-		camera = new Camera(screenSplit, SCREEN_HEIGHT);
+		camera = new Camera(screenSplit, SCREEN_HEIGHT, -1, -1, -1);
 		oldMousePosition = new Vector2D();
 		oldCameraPosition = new Vector2D();
 
