@@ -9,8 +9,9 @@ import gameengine.input.KeyboardInputManager;
 import gameengine.loaders.LeveldataLoader;
 import gamelogic.level.Level;
 import gamelogic.level.Leveldata;
+import gamelogic.level.PlayerDieListener;
 
-public class Main extends GameBase{
+public class Main extends GameBase implements PlayerDieListener{
 
 	public static final int SCREEN_WIDTH = 1280;
 	public static final int SCREEN_HEIGHT = 860;
@@ -37,21 +38,21 @@ public class Main extends GameBase{
 		}
 		level = new Level(leveldata);
 
+		level.addPlayerDieListener(this);
 	}
 
-	public static void win() {
-		screenTransition.activate();
-	}
-
-	public void restart() {
+	@Override
+	public void onPlayerDeath() {
 		if(DEBUGGING) {
 			level.restartLevel();
 			return;
 		}
 		screenTransition.activate();
 	}
-
-
+	
+	public static void win() {
+		screenTransition.activate();
+	}
 
 	@Override
 	public void update(float tslf) {
@@ -61,11 +62,8 @@ public class Main extends GameBase{
 		level.update(tslf);
 
 		screenTransition.update(tslf);
-		if(!level.isActive() && level.isPlayerDead() && !screenTransition.isActive()) {
-			screenTransition.activate();
-		}
 		
-		if(!level.isActive()) {
+		if(!level.isActive() && level.isPlayerDead()) {
 			if(screenTransition.isActive() && !screenTransition.isActivating() && !screenTransition.isDeactivating()) {
 				level.restartLevel();
 				screenTransition.deactivate();

@@ -2,6 +2,7 @@ package gamelogic.level;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.List;
 
 import gameengine.PhysicsObject;
 import gameengine.graphics.Camera;
@@ -28,6 +29,8 @@ public class Level {
 	private boolean playerDead;
 	
 	private ArrayList<Enemy> enemiesList = new ArrayList<>();
+	
+	private List<PlayerDieListener> listeners = new ArrayList<>();
 	
 	public Level(Leveldata leveldata) {
 		this.leveldata = leveldata;
@@ -78,6 +81,7 @@ public class Level {
 	private void onPlayerDeath() {
 		active = false;
 		playerDead = true;
+		throwPlayerDieEvent();
 	}
 	
 	public void update(float tslf) {
@@ -130,6 +134,16 @@ public class Level {
 		if(Camera.SHOW_CAMERA) camera.draw(g); 
 		
 		g.translate((int)+camera.getX(), (int)+camera.getY());
+	}
+	
+	public void throwPlayerDieEvent() {
+		for (PlayerDieListener playerDieListener : listeners) {
+			playerDieListener.onPlayerDeath();
+		}
+	}
+	
+	public void addPlayerDieListener(PlayerDieListener listener) {
+		listeners.add(listener);
 	}
 	
 	//---------------------------------------------------------Getters
