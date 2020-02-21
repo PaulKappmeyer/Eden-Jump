@@ -27,10 +27,12 @@ public class Level {
 	
 	private boolean active;
 	private boolean playerDead;
+	private boolean playerWin;
 	
 	private ArrayList<Enemy> enemiesList = new ArrayList<>();
 	
-	private List<PlayerDieListener> listeners = new ArrayList<>();
+	private List<PlayerDieListener> dieListeners = new ArrayList<>();
+	private List<PlayerWinListener> winListeners = new ArrayList<>();
 	
 	public Level(Leveldata leveldata) {
 		this.leveldata = leveldata;
@@ -47,17 +49,17 @@ public class Level {
 			for (int y = 0; y < height; y++) {
 				int yPosition = y * tileSize;
 				
-				tiles[x][y] = new Tile(xPosition, yPosition, tileSize, null, false);
-				if(values[x][y] == 0) tiles[x][y] = new Tile(xPosition, yPosition, tileSize, null, false); //Air
-				else if(values[x][y] == 1) tiles[x][y] = new SolidTile(xPosition, yPosition, tileSize, GameResources.solid);
-				else if(values[x][y] == 2) tiles[x][y] = new Spikes(xPosition, yPosition, tileSize, Spikes.HORIZONTAL_DOWNWARDS);
-				else if(values[x][y] == 3) tiles[x][y] = new Spikes(xPosition, yPosition, tileSize, Spikes.HORIZONTAL_UPWARDS);
-				else if(values[x][y] == 4) tiles[x][y] = new Spikes(xPosition, yPosition, tileSize, Spikes.VERTICAL_LEFTWARDS);
-				else if(values[x][y] == 5) tiles[x][y] = new Spikes(xPosition, yPosition, tileSize, Spikes.VERTICAL_RIGHTWARDS);
-				else if(values[x][y] == 6) tiles[x][y] = new SolidTile(xPosition, yPosition, tileSize, GameResources.dirt);
-				else if(values[x][y] == 7) tiles[x][y] = new SolidTile(xPosition, yPosition, tileSize, GameResources.gras);
+				tiles[x][y] = new Tile(xPosition, yPosition, tileSize, null, false, this);
+				if(values[x][y] == 0) tiles[x][y] = new Tile(xPosition, yPosition, tileSize, null, false, this); //Air
+				else if(values[x][y] == 1) tiles[x][y] = new SolidTile(xPosition, yPosition, tileSize, GameResources.solid, this);
+				else if(values[x][y] == 2) tiles[x][y] = new Spikes(xPosition, yPosition, tileSize, Spikes.HORIZONTAL_DOWNWARDS, this);
+				else if(values[x][y] == 3) tiles[x][y] = new Spikes(xPosition, yPosition, tileSize, Spikes.HORIZONTAL_UPWARDS, this);
+				else if(values[x][y] == 4) tiles[x][y] = new Spikes(xPosition, yPosition, tileSize, Spikes.VERTICAL_LEFTWARDS, this);
+				else if(values[x][y] == 5) tiles[x][y] = new Spikes(xPosition, yPosition, tileSize, Spikes.VERTICAL_RIGHTWARDS, this);
+				else if(values[x][y] == 6) tiles[x][y] = new SolidTile(xPosition, yPosition, tileSize, GameResources.dirt, this);
+				else if(values[x][y] == 7) tiles[x][y] = new SolidTile(xPosition, yPosition, tileSize, GameResources.gras, this);
 				else if(values[x][y] == 8) enemiesList.add(new Enemy(xPosition, yPosition, null)); //TODO: objects vs tiles
-				else if(values[x][y] == 9) tiles[x][y] = new Flag(xPosition, yPosition, tileSize, GameResources.flag);
+				else if(values[x][y] == 9) tiles[x][y] = new Flag(xPosition, yPosition, tileSize, GameResources.flag, this);
 			}
 		}
 		
@@ -76,12 +78,19 @@ public class Level {
 		
 		active = true;
 		playerDead = false;
+		playerWin = false;
 	}
 	
-	private void onPlayerDeath() {
+	public void onPlayerDeath() {
 		active = false;
 		playerDead = true;
 		throwPlayerDieEvent();
+	}
+	
+	public void onPlayerWin() {
+		active = false;
+		playerWin = true;
+		throwPlayerWinEvent();
 	}
 	
 	public void update(float tslf) {
@@ -136,14 +145,26 @@ public class Level {
 		g.translate((int)+camera.getX(), (int)+camera.getY());
 	}
 	
+	//--------------------------Die-Listener
 	public void throwPlayerDieEvent() {
-		for (PlayerDieListener playerDieListener : listeners) {
+		for (PlayerDieListener playerDieListener : dieListeners) {
 			playerDieListener.onPlayerDeath();
 		}
 	}
 	
 	public void addPlayerDieListener(PlayerDieListener listener) {
-		listeners.add(listener);
+		dieListeners.add(listener);
+	}
+	
+	//------------------------Win-Listener
+	public void throwPlayerWinEvent() {
+		for (PlayerWinListener playerWinListener : winListeners) {
+			playerWinListener.onPlayerWin();
+		}
+	}
+	
+	public void addPlayerWinListener(PlayerWinListener listener) {
+		winListeners.add(listener);
 	}
 	
 	//---------------------------------------------------------Getters
@@ -153,6 +174,10 @@ public class Level {
 	
 	public boolean isPlayerDead() {
 		return playerDead;
+	}
+	
+	public boolean isPlayerWin() {
+		return playerWin;
 	}
 	
 	public Map getMap() {

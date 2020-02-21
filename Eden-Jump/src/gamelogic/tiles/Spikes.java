@@ -2,6 +2,7 @@ package gamelogic.tiles;
 
 import gameengine.hitbox.RectHitbox;
 import gamelogic.GameResources;
+import gamelogic.level.Level;
 
 public class Spikes extends Tile{
 
@@ -13,8 +14,8 @@ public class Spikes extends Tile{
 	private int offsetX = 25;
 	private int offsetY = 70;
 	
-	public Spikes(float x, float y, int size, int orientation) {
-		super(x, y, size, null, true);
+	public Spikes(float x, float y, int size, int orientation, Level level) {
+		super(x, y, size, null, true, level);
 		switch (orientation) {
 		case HORIZONTAL_UPWARDS:
 			hitbox = new RectHitbox(x , y, offsetX, offsetY, size - offsetX, size);

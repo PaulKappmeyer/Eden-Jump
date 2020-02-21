@@ -10,14 +10,15 @@ import gameengine.loaders.LeveldataLoader;
 import gamelogic.level.Level;
 import gamelogic.level.Leveldata;
 import gamelogic.level.PlayerDieListener;
+import gamelogic.level.PlayerWinListener;
 
-public class Main extends GameBase implements PlayerDieListener{
+public class Main extends GameBase implements PlayerDieListener, PlayerWinListener{
 
 	public static final int SCREEN_WIDTH = 1280;
 	public static final int SCREEN_HEIGHT = 860;
 	public static final boolean DEBUGGING = false;
 
-	private static ScreenTransition screenTransition = new ScreenTransition();
+	private ScreenTransition screenTransition = new ScreenTransition();
 
 	private Level level;
 
@@ -39,6 +40,7 @@ public class Main extends GameBase implements PlayerDieListener{
 		level = new Level(leveldata);
 
 		level.addPlayerDieListener(this);
+		level.addPlayerWinListener(this);
 	}
 
 	@Override
@@ -50,8 +52,9 @@ public class Main extends GameBase implements PlayerDieListener{
 		screenTransition.activate();
 	}
 	
-	public static void win() {
-		screenTransition.activate();
+	@Override
+	public void onPlayerWin() {
+		level.restartLevel();
 	}
 
 	@Override

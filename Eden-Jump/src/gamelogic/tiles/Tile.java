@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import gameengine.hitbox.RectHitbox;
 import gameengine.maths.Vector2D;
+import gamelogic.level.Level;
 
 public class Tile {
 
@@ -13,12 +14,14 @@ public class Tile {
 	protected RectHitbox hitbox;
 	protected BufferedImage image;
 	protected boolean solid;
+	protected Level level;
 	
-	public Tile(float x, float y, int size, BufferedImage image, boolean solid) {
+	public Tile(float x, float y, int size, BufferedImage image, boolean solid, Level level) {
 		this.position = new Vector2D(x, y);
 		this.size = size;
 		this.image = image;
 		this.solid = solid;
+		this.level = level;
 	}
 	
 	public void update (float tslf) {};
