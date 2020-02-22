@@ -1,0 +1,13 @@
+Name, X-Pos in tileset, Y-Pos in tileset
+tileSize=10
+Air,0,0
+Solid,1,0
+Spikes_downwards,2,0
+Spikes_upwards,3,0
+Spikes_leftwards,4,0
+Spikes_rightwards,5,0
+Dirt,0,1
+Gras,1,1
+Flag,2,1
+Flower1,3,1
+Flower2,3,1

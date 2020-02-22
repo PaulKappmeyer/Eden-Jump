@@ -15,6 +15,7 @@ import gameengine.GameBase;
 import gameengine.graphics.Camera;
 import gameengine.input.KeyboardInputManager;
 import gameengine.input.MouseInputManager;
+import gameengine.loaders.Tileset;
 import gameengine.maths.Vector2D;
 import gamelogic.GameResources;
 
@@ -54,19 +55,21 @@ class MapEditor extends GameBase{
 		oldMousePosition = new Vector2D();
 		oldCameraPosition = new Vector2D();
 
+		Tileset tileset = GameResources.tileset;
+		
 		PaletteItem[] paletteItems = new PaletteItem[12];
 		paletteItems[0] = new PaletteItem("Air", 0, null);
-		paletteItems[1] = new PaletteItem("Solid", 1, GameResources.solid);
-		paletteItems[2] = new PaletteItem("Spikes_downwards", 2, GameResources.spikes_downwards);
-		paletteItems[3] = new PaletteItem("Spikes_upwards", 3, GameResources.spikes_upwards);
-		paletteItems[4] = new PaletteItem("Spikes_leftwards", 4, GameResources.spikes_leftwards);
-		paletteItems[5] = new PaletteItem("Spikes_rightwards", 5, GameResources.spikes_rightwards);
-		paletteItems[6] = new PaletteItem("Spikes_rightwards", 6, GameResources.dirt);
-		paletteItems[7] = new PaletteItem("Spikes_rightwards", 7, GameResources.gras);
+		paletteItems[1] = new PaletteItem("Solid", 1, tileset.getImage("Solid"));
+		paletteItems[2] = new PaletteItem("Spikes_downwards", 2, tileset.getImage("Spikes_downwards"));
+		paletteItems[3] = new PaletteItem("Spikes_upwards", 3, tileset.getImage("Spikes_upwards"));
+		paletteItems[4] = new PaletteItem("Spikes_leftwards", 4, tileset.getImage("Spikes_leftwards"));
+		paletteItems[5] = new PaletteItem("Spikes_rightwards", 5, tileset.getImage("Spikes_rightwards"));
+		paletteItems[6] = new PaletteItem("Dirt", 6, tileset.getImage("Dirt"));
+		paletteItems[7] = new PaletteItem("Gras", 7, tileset.getImage("Gras"));
 		paletteItems[8] = new PaletteItem("Enemy", 8, GameResources.enemy);
-		paletteItems[9] = new PaletteItem("Flag", 9, GameResources.flag);
-		paletteItems[10] = new PaletteItem("Flag", 10, GameResources.flower1);
-		paletteItems[11] = new PaletteItem("Flag", 11, GameResources.flower2);
+		paletteItems[9] = new PaletteItem("Flag", 9, tileset.getImage("Flag"));
+		paletteItems[10] = new PaletteItem("Flower1", 10, tileset.getImage("Flower1"));
+		paletteItems[11] = new PaletteItem("Flower2", 11, tileset.getImage("Flower2"));
 		paletteTiles = new Palette(screenSplit + 15, 10, paletteItems);
 		paletteTiles.setSelectedIndex(0);
 

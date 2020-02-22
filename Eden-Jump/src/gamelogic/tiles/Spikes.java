@@ -1,6 +1,7 @@
 package gamelogic.tiles;
 
 import gameengine.hitbox.RectHitbox;
+import gameengine.loaders.Tileset;
 import gamelogic.GameResources;
 import gamelogic.level.Level;
 
@@ -16,22 +17,25 @@ public class Spikes extends Tile{
 	
 	public Spikes(float x, float y, int size, int orientation, Level level) {
 		super(x, y, size, null, true, level);
+		
+		Tileset tileset = GameResources.tileset;
+		
 		switch (orientation) {
 		case HORIZONTAL_UPWARDS:
 			hitbox = new RectHitbox(x , y, offsetX, offsetY, size - offsetX, size);
-			image = GameResources.spikes_upwards;
+			image = tileset.getImage("Spikes_upwards");
 			break;
 		case HORIZONTAL_DOWNWARDS:
 			hitbox = new RectHitbox(x , y, offsetX, 0, size - offsetX, size - offsetY);
-			image = GameResources.spikes_downwards;
+			image = tileset.getImage("Spikes_downwards");;
 			break;
 		case VERTICAL_LEFTWARDS:
 			hitbox = new RectHitbox(x , y, offsetY, offsetX, size, size - offsetX);
-			image = GameResources.spikes_leftwards;
+			image = tileset.getImage("Spikes_leftwards");;
 			break;
 		case VERTICAL_RIGHTWARDS:
 			hitbox = new RectHitbox(x , y, 0, offsetX, size - offsetY, size - offsetX);
-			image = GameResources.spikes_rightwards;
+			image = tileset.getImage("Spikes_rightwards");;
 			break;
 
 		default:

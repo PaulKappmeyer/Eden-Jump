@@ -7,7 +7,7 @@ import gamelogic.level.Leveldata;
 
 public class LeveldataLoader {
 
-	public static Leveldata loadMap(String filePath) throws Exception {
+	public static Leveldata loadLeveldata(String filePath) throws Exception {
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
 		
 		int width = Integer.parseInt(bufferedReader.readLine().split("=")[1]);
