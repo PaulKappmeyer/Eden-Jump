@@ -73,8 +73,10 @@ public class ScreenTransition {
 	}
 
 	public void activate() {
+		position.x = -Main.SCREEN_WIDTH;
 		isActive = true;
 		isActivating = true;
+		isDeactivating = false;
 	}
 
 	public void deactivate() {

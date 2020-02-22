@@ -4,8 +4,8 @@ Air,0,0
 Solid,1,0
 Spikes_downwards,2,0
 Spikes_upwards,3,0
-Spikes_leftwards,4,0
-Spikes_rightwards,5,0
+Spikes_rightwards,4,0
+Spikes_leftwards,5,0
 Dirt,0,1
 Gras,1,1
 Flag,2,1
