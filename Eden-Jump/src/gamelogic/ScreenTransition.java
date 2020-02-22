@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
 
 import gameengine.maths.Vector2D;
 
@@ -22,6 +24,8 @@ public class ScreenTransition {
 	private int textHeight = Main.SCREEN_HEIGHT;
 	private Font font = new Font("Arial", Font.BOLD, 400);
 	
+	private List<ScreenTransitionListener> listeners = new ArrayList<>();
+	
 	public ScreenTransition() {
 		this.position = new Vector2D(-Main.SCREEN_WIDTH, 0);
 		this.width = Main.SCREEN_WIDTH;
@@ -36,6 +40,7 @@ public class ScreenTransition {
 				if(0 < position.x) {
 					position.x = 0;
 					isActivating = false;
+					throwTransitionActivationFinishedEvent();
 				}
 			}
 			//Deactivating
@@ -46,6 +51,7 @@ public class ScreenTransition {
 					
 					isDeactivating = false;
 					isActive = false;
+					throwTransitionFinishedEvent();
 				}
 			}
 		}
@@ -87,16 +93,20 @@ public class ScreenTransition {
 		this.text = text;
 	}
 	
-	//---------------------------------------Getters
-	public boolean isActive() {
-		return isActive;
+	//------------------------Listener
+	public void throwTransitionActivationFinishedEvent() {
+		for (ScreenTransitionListener screenTransitionListener : listeners) {
+			screenTransitionListener.onTransitionActivationFinished();
+		}
 	}
-
-	public boolean isActivating() {
-		return isActivating;
+	
+	public void throwTransitionFinishedEvent() {
+		for (ScreenTransitionListener screenTransitionListener : listeners) {
+			screenTransitionListener.onTransitionFinished();
+		}
 	}
-
-	public boolean isDeactivating() {
-		return isDeactivating;
+	
+	public void addScreenTransitionListener(ScreenTransitionListener listener) {
+		listeners.add(listener);
 	}
 }

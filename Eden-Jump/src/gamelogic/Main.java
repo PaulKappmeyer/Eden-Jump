@@ -12,7 +12,7 @@ import gamelogic.level.Leveldata;
 import gamelogic.level.PlayerDieListener;
 import gamelogic.level.PlayerWinListener;
 
-public class Main extends GameBase implements PlayerDieListener, PlayerWinListener{
+public class Main extends GameBase implements PlayerDieListener, PlayerWinListener, ScreenTransitionListener{
 
 	public static final int SCREEN_WIDTH = 1280;
 	public static final int SCREEN_HEIGHT = 860;
@@ -23,7 +23,8 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 	private Leveldata[] levels;
 	private Level currentLevel;
 	private int currentLevelIndex;
-
+	private boolean active;
+	
 	public static void main(String[] args) {
 		Main main = new Main();
 		main.start("Eden Jump", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -46,8 +47,33 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 
 		currentLevel.addPlayerDieListener(this);
 		currentLevel.addPlayerWinListener(this);
+
+		screenTransition.addScreenTransitionListener(this);
+		
+		active = true;
+	}
+	
+	//-----------------------------------------------------Screen Transition Listener
+	@Override
+	public void onTransitionActivationFinished() {
+		if(currentLevel.isPlayerDead()) {
+			currentLevel.restartLevel();
+			screenTransition.deactivate();
+		}
+		if(currentLevel.isPlayerWin()) {
+			if(currentLevelIndex < levels.length-1) {
+				changeLevel();
+				screenTransition.deactivate();
+			}
+		}
 	}
 
+	@Override
+	public void onTransitionFinished() {
+		active = true;
+	}
+
+	//-----------------------------------------------Player Listener
 	@Override
 	public void onPlayerDeath() {
 		if(DEBUGGING) {
@@ -56,12 +82,16 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 		}
 		screenTransition.setText("LOSE");
 		screenTransition.activate();
+		
+		active = false;
 	}
 
 	@Override
 	public void onPlayerWin() {
 		screenTransition.setText("WIN");
 		screenTransition.activate();
+		
+		active = false;
 	}
 
 	private void changeLevel() {
@@ -79,24 +109,9 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 		if(KeyboardInputManager.isKeyDown(KeyEvent.VK_N)) init();
 		if(KeyboardInputManager.isKeyDown(KeyEvent.VK_ESCAPE)) System.exit(0);
 
-		currentLevel.update(tslf);
+		if (active) currentLevel.update(tslf);
 
 		screenTransition.update(tslf);
-
-		if(!currentLevel.isActive() && currentLevel.isPlayerDead()) {
-			if(screenTransition.isActive() && !screenTransition.isActivating() && !screenTransition.isDeactivating()) {
-				currentLevel.restartLevel();
-				screenTransition.deactivate();
-			}
-		}
-		if(!currentLevel.isActive() && currentLevel.isPlayerWin()) {
-			if(currentLevelIndex < levels.length-1) {
-				if(screenTransition.isActive() && !screenTransition.isActivating() && !screenTransition.isDeactivating()) {
-					changeLevel();
-					screenTransition.deactivate();
-				}
-			}
-		}
 	}
 
 	@Override
