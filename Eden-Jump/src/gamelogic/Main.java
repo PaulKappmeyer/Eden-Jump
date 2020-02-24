@@ -25,6 +25,10 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 	private int currentLevelIndex;
 	private boolean active;
 	
+	private int numberOfTries;
+	private long levelStartTime;
+	private long levelFinishTime;
+	
 	public static void main(String[] args) {
 		Main main = new Main();
 		main.start("Eden Jump", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -51,6 +55,9 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 		screenTransition.addScreenTransitionListener(this);
 		
 		active = true;
+		
+		numberOfTries = 0;
+		levelStartTime = System.currentTimeMillis();
 	}
 	
 	//-----------------------------------------------------Screen Transition Listener
@@ -58,12 +65,10 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 	public void onTransitionActivationFinished() {
 		if(currentLevel.isPlayerDead()) {
 			currentLevel.restartLevel();
-			screenTransition.deactivate();
 		}
 		if(currentLevel.isPlayerWin()) {
 			if(currentLevelIndex < levels.length-1) {
 				changeLevel();
-				screenTransition.deactivate();
 			}
 		}
 	}
@@ -76,25 +81,27 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 	//-----------------------------------------------Player Listener
 	@Override
 	public void onPlayerDeath() {
+		numberOfTries++;
+		levelStartTime = System.currentTimeMillis();
 		if(DEBUGGING) {
 			currentLevel.restartLevel();
 			return;
 		}
-		screenTransition.setText("LOSE");
-		screenTransition.activate();
+		screenTransition.showLoseScreen(numberOfTries);
 		
 		active = false;
 	}
 
 	@Override
 	public void onPlayerWin() {
-		screenTransition.setText("WIN");
-		screenTransition.activate();
+		levelFinishTime = System.currentTimeMillis();
+		screenTransition.showVictorySceen(levelFinishTime - levelStartTime);
 		
 		active = false;
 	}
 
 	private void changeLevel() {
+		numberOfTries = 0;
 		if(currentLevelIndex < levels.length-1) {
 			currentLevelIndex++;
 			currentLevel = new Level(levels[currentLevelIndex]);

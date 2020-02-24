@@ -11,8 +11,6 @@ public class PhysicsObject extends GameObject{
 	public static final int TOP = 1;
 	public static final int LEF = 2;
 	public static final int RIG = 3;
-	
-	public static float GRAVITY = 70;
 
 	protected Vector2D movementVector;
 
@@ -34,7 +32,7 @@ public class PhysicsObject extends GameObject{
 
 	@Override
 	public void update(float tslf) {
-		movementVector.y += (GRAVITY * GRAVITY) * tslf;
+		movementVector.y += (Level.GRAVITY * Level.GRAVITY) * tslf;
 
 		updateCollisionMatrix(tslf); // checking collision based on the new position -> current movement Vector
 

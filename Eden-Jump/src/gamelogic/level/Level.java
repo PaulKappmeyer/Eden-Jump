@@ -35,6 +35,8 @@ public class Level {
 	private List<PlayerDieListener> dieListeners = new ArrayList<>();
 	private List<PlayerWinListener> winListeners = new ArrayList<>();
 	
+	public static float GRAVITY = 70;
+	
 	public Level(Leveldata leveldata) {
 		this.leveldata = leveldata;
 		
