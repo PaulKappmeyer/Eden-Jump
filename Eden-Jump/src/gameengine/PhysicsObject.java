@@ -179,4 +179,8 @@ public class PhysicsObject extends GameObject{
 	public RectHitbox getHitbox() {
 		return hitbox;
 	}
+	
+	public Level getLevel() {
+		return level;
+	}
 }

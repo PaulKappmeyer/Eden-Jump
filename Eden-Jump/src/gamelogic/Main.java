@@ -29,6 +29,8 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 	private long levelStartTime;
 	private long levelFinishTime;
 	
+	private LevelCompleteBar levelCompleteBar;
+	
 	public static void main(String[] args) {
 		Main main = new Main();
 		main.start("Eden Jump", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -58,6 +60,8 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 		
 		numberOfTries = 0;
 		levelStartTime = System.currentTimeMillis();
+		
+		levelCompleteBar = new LevelCompleteBar(100, 10, SCREEN_WIDTH - 200, 10, currentLevel.getPlayer());
 	}
 	
 	//-----------------------------------------------------Screen Transition Listener
@@ -65,6 +69,7 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 	public void onTransitionActivationFinished() {
 		if(currentLevel.isPlayerDead()) {
 			currentLevel.restartLevel();
+			levelCompleteBar = new LevelCompleteBar(100, 10, SCREEN_WIDTH - 200, 10, currentLevel.getPlayer());
 		}
 		if(currentLevel.isPlayerWin()) {
 			if(currentLevelIndex < levels.length-1) {
@@ -85,6 +90,7 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 		levelStartTime = System.currentTimeMillis();
 		if(DEBUGGING) {
 			currentLevel.restartLevel();
+			levelCompleteBar = new LevelCompleteBar(100, 10, SCREEN_WIDTH - 200, 10, currentLevel.getPlayer());
 			return;
 		}
 		screenTransition.showLoseScreen(numberOfTries);
@@ -108,6 +114,7 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 
 			currentLevel.addPlayerDieListener(this);
 			currentLevel.addPlayerWinListener(this);
+			levelCompleteBar = new LevelCompleteBar(100, 10, SCREEN_WIDTH - 200, 10, currentLevel.getPlayer());
 		}
 	}
 
@@ -119,14 +126,20 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 		if (active) currentLevel.update(tslf);
 
 		screenTransition.update(tslf);
+		
+		levelCompleteBar.update(tslf);
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		drawBackground(g);
 
+		//Camera-translate
 		currentLevel.draw(g);
-
+		//- Camera-translate
+		
+		levelCompleteBar.draw(g);
+		
 		screenTransition.draw(g);
 	}
 
