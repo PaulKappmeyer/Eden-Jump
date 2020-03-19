@@ -18,4 +18,8 @@ public class Tileset {
 	public BufferedImage getImage(String name) {
 		return images.get(name);
 	}
+	
+	public Map<String, BufferedImage> getImages() {
+		return images;
+	}
 }

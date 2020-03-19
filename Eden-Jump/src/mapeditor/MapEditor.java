@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.JFileChooser;
 
@@ -56,20 +59,17 @@ class MapEditor extends GameBase{
 		oldCameraPosition = new Vector2D();
 
 		Tileset tileset = GameResources.tileset;
+
+		Map<String, BufferedImage> images = tileset.getImages();
+		PaletteItem[] paletteItems = new PaletteItem[images.size()];
 		
-		PaletteItem[] paletteItems = new PaletteItem[12];
-		paletteItems[0] = new PaletteItem("Air", 0, null);
-		paletteItems[1] = new PaletteItem("Solid", 1, tileset.getImage("Solid"));
-		paletteItems[2] = new PaletteItem("Spikes_downwards", 2, tileset.getImage("Spikes_downwards"));
-		paletteItems[3] = new PaletteItem("Spikes_upwards", 3, tileset.getImage("Spikes_upwards"));
-		paletteItems[4] = new PaletteItem("Spikes_leftwards", 4, tileset.getImage("Spikes_leftwards"));
-		paletteItems[5] = new PaletteItem("Spikes_rightwards", 5, tileset.getImage("Spikes_rightwards"));
-		paletteItems[6] = new PaletteItem("Dirt", 6, tileset.getImage("Dirt"));
-		paletteItems[7] = new PaletteItem("Gras", 7, tileset.getImage("Gras"));
-		paletteItems[8] = new PaletteItem("Enemy", 8, GameResources.enemy);
-		paletteItems[9] = new PaletteItem("Flag", 9, tileset.getImage("Flag"));
-		paletteItems[10] = new PaletteItem("Flower1", 10, tileset.getImage("Flower1"));
-		paletteItems[11] = new PaletteItem("Flower2", 11, tileset.getImage("Flower2"));
+		int i = 0;
+		for(Entry<String, BufferedImage> entry: images.entrySet()) {			
+			paletteItems[i] = new PaletteItem(entry.getKey(), i, entry.getValue());
+			i++;
+		}
+		
+		//paletteItems[8] = new PaletteItem("Enemy", 8, GameResources.enemy);
 		paletteTiles = new Palette(screenSplit + 15, 10, paletteItems);
 		paletteTiles.setSelectedIndex(0);
 
@@ -228,7 +228,7 @@ class MapEditor extends GameBase{
 			}
 		}
 	}
-	
+
 	@Override
 	public void draw(Graphics g) {
 		drawBackground(g);
