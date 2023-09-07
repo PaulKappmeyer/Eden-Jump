@@ -23,11 +23,11 @@ public final class ImageLoader {
 	 * @throws Exception 
 	 */
 	public static BufferedImage loadImage(String path) throws Exception{
-		File source = new File(path);
-		if(!source.exists()) throw new FileNotFoundException("This file could not be found");
-		if(!source.isFile()) throw new Exception("The given path is not a file");
+		File file = new File(path);
+		if(!file.exists()) throw new FileNotFoundException("This file could not be found");
+		if(!file.isFile()) throw new Exception("The given path is not a file");
 		
-		BufferedImage image = ImageIO.read(source);
+		BufferedImage image = ImageIO.read(file);
 		return image;
 	}
 }

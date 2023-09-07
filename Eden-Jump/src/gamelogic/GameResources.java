@@ -14,9 +14,9 @@ public final class GameResources {
 	
 	public static void load() {
 		try {
-			tileset = TilesetLoader.loadTileset(".\\gfx\\tileset.txt", ImageLoader.loadImage(".\\gfx\\tileset.png"));
+			tileset = TilesetLoader.loadTileset("./Eden-Jump/gfx/tileset.txt", ImageLoader.loadImage("./Eden-Jump/gfx/tileset.png"));
 			
-			enemy = ImageLoader.loadImage(".\\gfx\\enemy.png");
+			enemy = ImageLoader.loadImage("./Eden-Jump/gfx/enemy.png");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
