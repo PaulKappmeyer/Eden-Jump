@@ -80,7 +80,7 @@ class MapEditor extends GameBase{
 		map = createNewMap(100, 20, 50);
 
 		jFileChooser = new JFileChooser();
-		jFileChooser.setCurrentDirectory(new File(".\\maps\\"));
+		jFileChooser.setCurrentDirectory(new File("./Eden-Jump/maps/"));
 	}
 
 	public EditorTiledMap createNewMap(int width, int height, int tileSize) {

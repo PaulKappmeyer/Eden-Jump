@@ -10,7 +10,7 @@ Dirt,0,1
 Gras,1,1
 Flag,2,1
 Flower1,3,1
-Flower2,3,1
+Flower2,4,1
 Solid_down,6,0
 Solid_up,7,0
 Solid_middle,8,0
