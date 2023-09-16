@@ -134,6 +134,10 @@ public class Main extends GameBase implements PlayerDieListener, PlayerWinListen
 	public void draw(Graphics g) {
 		drawBackground(g);
 
+		// fps
+		g.setColor(Color.BLACK);
+		g.drawString("" + super.getFPS(), 15, 15);
+		
 		//Camera-translate
 		currentLevel.draw(g);
 		//- Camera-translate
